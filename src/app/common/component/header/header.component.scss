@@ -1,0 +1,145 @@
+.header {
+  background: var(--white);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-link {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-pink);
+  letter-spacing: -1px;
+}
+
+.tagline {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+
+  a {
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 1.05rem;
+
+    &:hover {
+      color: var(--primary-pink);
+    }
+  }
+}
+
+.header-cta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.phone-btn {
+  color: var(--text-dark);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.book-btn {
+  background: var(--primary-pink);
+  color: white;
+  padding: 12px 28px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+
+.book-btn:hover {
+  background: var(--tertiary-pink);
+  transform: translateY(-2px);
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  position: relative;
+
+  span {
+    position: absolute;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: var(--primary-pink);
+    transition: var(--transition);
+    border-radius: 3px;
+
+    &:nth-child(1) { top: 5px; }
+    &:nth-child(2) { top: 13px; }
+    &:nth-child(3) { top: 21px; }
+
+    &.open {
+      &:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      &:nth-child(2) { opacity: 0; }
+      &:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+    }
+  }
+}
+
+.mobile-menu {
+  display: none;
+  background: var(--white);
+  padding: 20px 0;
+  box-shadow: var(--shadow);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 20px;
+
+  a {
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-light);
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .nav-links,
+  .header-cta {
+    display: none;
+  }
+  .hamburger {
+    display: block;
+  }
+  .mobile-menu {
+    display: block;
+  }
+}

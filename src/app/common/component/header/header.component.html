@@ -1,0 +1,46 @@
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <!-- Logo -->
+      <div class="logo">
+        <a routerLink="/" class="logo-link">
+          <span class="salon-name">{{ clientData.name }}</span>
+        </a>
+        <span class="tagline">{{ clientData.tagline }}</span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <ul class="nav-links">
+        <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
+        <li><a routerLink="/menu" (click)="closeMenu()">Menu</a></li>
+        <li><a routerLink="/gallery" (click)="closeMenu()">Gallery</a></li>
+        <li><a routerLink="/booking" (click)="closeMenu()">Booking</a></li>
+        <li><a routerLink="/contact-us" (click)="closeMenu()">Contact Us</a></li>
+      </ul>
+
+      <!-- CTA -->
+      <div class="header-cta">
+        <a href="tel:{{ clientData.phone }}" class="phone-btn">
+          📞 {{ clientData.phone }}
+        </a>
+        <a routerLink="/booking" class="book-btn">Book Now</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button class="hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
+        <span [class.open]="isMenuOpen"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" *ngIf="isMenuOpen">
+      <ul class="mobile-nav-links">
+        <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
+        <li><a routerLink="/menu" (click)="closeMenu()">Menu</a></li>
+        <li><a routerLink="/gallery" (click)="closeMenu()">Gallery</a></li>
+        <li><a routerLink="/booking" (click)="closeMenu()">Booking</a></li>
+        <li><a routerLink="/contact-us" (click)="closeMenu()">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+</header>

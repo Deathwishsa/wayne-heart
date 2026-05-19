@@ -1,0 +1,45 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <h3 class="salon-name">{{ clientData.name }}</h3>
+        <p class="tagline">{{ clientData.tagline }}</p>
+        <p class="hours">Hours: {{ clientData.businessHours }}</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a routerLink="/">Home</a></li>
+          <li><a routerLink="/menu">Menu &amp; Services</a></li>
+          <li><a routerLink="/gallery">Gallery</a></li>
+          <li><a routerLink="/booking">Book Appointment</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-column">
+        <h4>Contact Us</h4>
+        <p><a href="tel:{{ clientData.phone }}">{{ clientData.phone }}</a></p>
+        <p><a href="mailto:{{ clientData.email }}">{{ clientData.email }}</a></p>
+        <p>{{ clientData.address }}</p>
+      </div>
+
+      <!-- Social -->
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="{{ clientData.social.instagram }}" target="_blank" aria-label="Instagram">📸</a>
+          <a *ngIf="clientData.social.facebook" href="{{ clientData.social.facebook }}" target="_blank" aria-label="Facebook">📘</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} {{ clientData.name }}. All Rights Reserved.</p>
+      <p class="designer">Designed with elegance for the beauty industry</p>
+    </div>
+  </div>
+</footer>

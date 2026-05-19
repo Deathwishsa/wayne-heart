@@ -1,0 +1,7 @@
+<div class="day-cell" 
+     [class.today]="isToday"
+     [class.booked]="status === 'booked'"
+     [class.requested]="status === 'requested'"
+     (click)="onClick()">
+  <span *ngIf="date" class="day-number">{{ date.getDate() }}</span>
+</div>

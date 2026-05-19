@@ -1,0 +1,54 @@
+<div class="gallery-page section-padding" (keydown)="onKeyDown($event)" tabindex="0">
+  <div class="container">
+    <div class="page-header">
+      <h1>Our Gallery</h1>
+      <p class="subtitle">Moments of beauty, captured</p>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filters">
+      <button 
+        [class.active]="activeFilter === 'all'"
+        (click)="setFilter('all')">All</button>
+      <button 
+        [class.active]="activeFilter === 'hair'"
+        (click)="setFilter('hair')">Hair</button>
+      <button 
+        [class.active]="activeFilter === 'nails'"
+        (click)="setFilter('nails')">Nails</button>
+      <button 
+        [class.active]="activeFilter === 'combo'"
+        (click)="setFilter('combo')">Combos</button>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="gallery-grid">
+      <div class="gallery-item" 
+           *ngFor="let image of filteredImages; let i = index"
+           (click)="openLightbox(i)">
+        <img [src]="image.url" [alt]="image.alt" loading="lazy">
+        <div class="overlay">
+          <span class="view-text">View Full</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" *ngIf="selectedImageIndex !== null" (click)="closeLightbox()">
+    <div class="lightbox-content" (click)="$event.stopImmediatePropagation()">
+      <button class="close-btn" (click)="closeLightbox()" aria-label="Close">✕</button>
+      
+      <img [src]="filteredImages[selectedImageIndex].url" 
+           [alt]="filteredImages[selectedImageIndex].alt">
+
+      <div class="lightbox-caption">
+        <p>{{ filteredImages[selectedImageIndex].alt }}</p>
+      </div>
+
+      <!-- Navigation -->
+      <button class="nav-btn prev" (click)="prevImage()" aria-label="Previous">‹</button>
+      <button class="nav-btn next" (click)="nextImage()" aria-label="Next">›</button>
+    </div>
+  </div>
+</div>

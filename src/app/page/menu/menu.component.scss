@@ -1,0 +1,51 @@
+.menu-page {
+  background: var(--white);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 60px;
+
+  h1 {
+    font-size: 3.2rem;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 1.4rem;
+    color: var(--text-light);
+    font-style: italic;
+  }
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+
+  button {
+    background: var(--gray-light);
+    color: var(--text-dark);
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: var(--transition);
+
+    &.active {
+      background: var(--primary-pink);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+  }
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 30px;
+}

@@ -1,0 +1,59 @@
+<div class="booking-page section-padding">
+  <div class="container">
+    <div class="page-header">
+      <h1>Book Your Appointment</h1>
+      <p class="subtitle">Choose a date and time – we look forward to pampering you</p>
+    </div>
+
+    <div class="booking-layout">
+      <!-- Calendar -->
+      <div class="calendar-section">
+        <app-calendar-grid
+          [currentDate]="currentDate"
+          [availability]="clientData.mockAvailability"
+          (dateSelected)="onDateSelected($event)">
+        </app-calendar-grid>
+      </div>
+
+      <!-- Time Slots & Form -->
+      <div class="booking-form" *ngIf="selectedDate">
+        <h3>{{ selectedDate | date:'EEEE, MMMM d, yyyy' }}</h3>
+        <p class="status-badge" 
+           [class.available]="getAvailability(selectedDate) === 'available'"
+           [class.requested]="getAvailability(selectedDate) === 'requested'">
+          {{ getAvailability(selectedDate) | titlecase }}
+        </p>
+
+        <div class="time-slots">
+          <h4>Available Times</h4>
+          <div class="slots-grid">
+            <button *ngFor="let time of filteredTimeSlots"
+                    [class.selected]="time === selectedTime"
+                    (click)="selectedTime = time">
+              {{ time }}
+            </button>
+          </div>
+        </div>
+
+        <form (ngSubmit)="requestAppointment()">
+          <input type="text" placeholder="Your Name" [(ngModel)]="name" name="name" required>
+          <input type="email" placeholder="Email Address" [(ngModel)]="email" name="email" required>
+          <select [(ngModel)]="serviceType" name="serviceType" required>
+            <option value="">Select Service</option>
+            <option value="Hair">Hair</option>
+            <option value="Nails">Nails</option>
+            <option value="Combo">Combo</option>
+          </select>
+          <button type="submit" class="submit-btn">Request Appointment</button>
+        </form>
+
+        <button class="cancel-btn" (click)="selectedDate = null">Cancel</button>
+      </div>
+
+      <!-- Placeholder when no date selected -->
+      <div class="booking-form placeholder" *ngIf="!selectedDate">
+        <p class="empty-state">👆 Select a date on the calendar to see available times</p>
+      </div>
+    </div>
+  </div>
+</div>

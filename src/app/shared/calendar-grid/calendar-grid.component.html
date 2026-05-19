@@ -1,0 +1,21 @@
+<div class="calendar">
+  <div class="calendar-header">
+    <button (click)="emitPrevMonth()" class="nav-btn">‹</button>
+    <h2>{{ monthName }}</h2>
+    <button (click)="emitNextMonth()" class="nav-btn">›</button>
+  </div>
+
+  <div class="weekdays">
+    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
+    <div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+
+  <div class="days-grid">
+    <app-day-cell
+      *ngFor="let day of daysInMonth"
+      [date]="day"
+      [status]="day ? getStatus(day) : null"
+      (dateClick)="day && selectDate(day)">
+    </app-day-cell>
+  </div>
+</div>

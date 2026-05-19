@@ -1,0 +1,36 @@
+.day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+
+  &:hover:not(.booked) {
+    background: var(--secondary-pink);
+  }
+
+  .day-number {
+    font-size: 1.1rem;
+  }
+
+  &.today {
+    border: 3px solid var(--primary-pink);
+  }
+
+  &.booked {
+    background: #ff4d4d;
+    color: white;
+    cursor: not-allowed;
+  }
+
+  &.requested {
+    background: #ffaa33;
+    color: white;
+  }
+
+  /* Available stays white with subtle hover */
+}

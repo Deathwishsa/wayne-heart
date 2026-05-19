@@ -1,0 +1,19 @@
+<div class="service-card">
+  <div class="card-image">
+    <img [src]="service.image || 'https://m.media-amazon.com/images/I/61Ym9cyDdRL._AC_UF894,1000_QL80_.jpg'" 
+         [alt]="service.name" loading="lazy">
+  </div>
+  
+  <div class="card-body">
+    <h3>{{ service.name }}</h3>
+    <div class="meta">
+      <span class="price">{{ service.price }}</span>
+      <span class="duration">{{ service.duration }}</span>
+    </div>
+    <p class="description">{{ service.description }}</p>
+    
+    <a routerLink="/booking" class="book-btn">
+      Book This Service
+    </a>
+  </div>
+</div>
