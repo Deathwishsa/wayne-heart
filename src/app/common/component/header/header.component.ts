@@ -1,26 +1,52 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { DataService } from '../../../services/data.service';
-import { CommonModule } from '@angular/common';
+// =============================================================================
+// HEADER COMPONENT
+// src/app/common/component/header/header.component.ts
+// =============================================================================
+
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { BUSINESS } from '../../constant/business';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [RouterLink, CommonModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
-  private dataService = inject(DataService);
-  clientData = this.dataService.getClientData();
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  isMenuOpen = false;
+  business = BUSINESS;
+  mobileMenuOpen = false;
+  isScrolled      = false;
 
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+  private routerSub!: Subscription;
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    // Close mobile menu on route change
+    this.routerSub = this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => {
+        this.mobileMenuOpen = false;
+      });
   }
 
-  closeMenu() {
-    this.isMenuOpen = false;
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.isScrolled = window.scrollY > 40;
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
   }
 }

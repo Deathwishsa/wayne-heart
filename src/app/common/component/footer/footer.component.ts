@@ -1,18 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { DataService } from '../../../services/data.service';
-import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+// =============================================================================
+// FOOTER COMPONENT
+// src/app/common/component/footer/footer.component.ts
+// =============================================================================
+
+import { Component } from '@angular/core';
+import { BUSINESS } from '../../constant/business';
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
-  imports: [RouterLink, CommonModule],
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+  styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent {
-  private dataService = inject(DataService);
-  clientData = this.dataService.getClientData();
-
-  currentYear = new Date().getFullYear();   // ← Fixed the Date error
+  business      = BUSINESS;
+  currentYear   = new Date().getFullYear();
 }
