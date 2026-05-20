@@ -4,28 +4,30 @@
 // =============================================================================
 
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BUSINESS } from '../../constant/business';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  business = BUSINESS;
+  business       = BUSINESS;
   mobileMenuOpen = false;
-  isScrolled      = false;
+  isScrolled     = false;
 
   private routerSub!: Subscription;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Close mobile menu on route change
     this.routerSub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => {

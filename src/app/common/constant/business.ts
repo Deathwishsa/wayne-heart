@@ -35,6 +35,13 @@ export interface Testimonial {
   event: string;
 }
 
+export interface GalleryItem {
+  src      : string;
+  alt      : string;
+  category : string;
+  caption  : string;
+}
+
 export const BUSINESS = {
   // ── Identity
   name        : 'Wayne Heart',
@@ -156,4 +163,80 @@ export const BUSINESS = {
     'assets/images/gallery-5.jpg',
     'assets/images/gallery-6.jpg',
   ],
+
+  galleryCategories: ['All', 'Weddings', 'Corporate', 'Karaoke', 'Private Parties'] as const,
+  galleryItems: [
+  {
+    src      : 'https://picsum.photos/id/1005/800/1000',
+    alt      : 'Wayne Heart hosting a wedding reception',
+    category : 'Weddings',
+    caption  : 'Wedding Reception — Stellenbosch Wine Estate',
+  },
+  {
+    src      : 'https://picsum.photos/id/1074/800/600',
+    alt      : 'Corporate event hosting',
+    category : 'Corporate',
+    caption  : 'Corporate Year-End — Cape Town CBD',
+  },
+  {
+    src      : 'https://picsum.photos/id/1015/800/900',
+    alt      : 'Karaoke night in full swing',
+    category : 'Karaoke',
+    caption  : 'Karaoke Night — Camps Bay',
+  },
+  {
+    src      : 'https://picsum.photos/id/1018/800/650',
+    alt      : 'Private birthday party',
+    category : 'Private Parties',
+    caption  : 'Private Birthday — Constantia',
+  },
+  {
+    src      : 'https://picsum.photos/id/1025/800/1100',
+    alt      : 'Wayne Heart at a garden wedding',
+    category : 'Weddings',
+    caption  : 'Garden Wedding — Franschhoek',
+  },
+  {
+    src      : 'https://picsum.photos/id/1035/800/600',
+    alt      : 'Award ceremony hosting',
+    category : 'Corporate',
+    caption  : 'Awards Evening — V&A Waterfront',
+  },
+  {
+    src      : 'https://picsum.photos/id/1040/800/750',
+    alt      : 'Karaoke crowd singing along',
+    category : 'Karaoke',
+    caption  : 'Karaoke Party — Sea Point',
+  },
+  {
+    src      : 'https://picsum.photos/id/1043/800/1000',
+    alt      : 'Milestone birthday celebration',
+    category : 'Private Parties',
+    caption  : '50th Birthday — Hout Bay',
+  },
+  {
+    src      : 'https://picsum.photos/id/1047/800/600',
+    alt      : 'Beach wedding hosting',
+    category : 'Weddings',
+    caption  : 'Beach Wedding — Clifton',
+  },
+  {
+    src      : 'https://picsum.photos/id/1055/800/900',
+    alt      : 'Team building event',
+    category : 'Corporate',
+    caption  : 'Team Building Day — Paarl',
+  },
+  {
+    src      : 'https://picsum.photos/id/1060/800/650',
+    alt      : 'Karaoke competition night',
+    category : 'Karaoke',
+    caption  : 'Karaoke Competition — Bloubergstrand',
+  },
+  {
+    src      : 'https://picsum.photos/id/1062/800/800',
+    alt      : 'Surprise anniversary party',
+    category : 'Private Parties',
+    caption  : 'Anniversary Surprise — Green Point',
+  },
+] as GalleryItem[],
 };

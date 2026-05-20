@@ -1,153 +1,530 @@
-.contact-us {
-  padding: 40px 0 80px;
+// =============================================================================
+// CONTACT PAGE STYLES
+// src/app/page/contact-us/contact-us.component.scss
+// =============================================================================
 
-  .page-header {
-    text-align: center;
-    margin-bottom: 60px;
+@use '../../../styles/theme' as t;
 
-    h1 {
-      font-size: 3.2rem;
-      color: var(--primary-pink);
-      margin-bottom: 12px;
-    }
+// ══════════════════════════════════════════════════════════════════════════════
+// PAGE HERO
+// ══════════════════════════════════════════════════════════════════════════════
 
-    .tagline {
-      font-size: 1.35rem;
-      color: var(--text-light);
-      max-width: 620px;
-      margin: 0 auto;
+.page-hero {
+  position: relative;
+  padding-block: t.$space-24 t.$space-16;
+  text-align: center;
+  overflow: hidden;
+
+  &__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(t.$color-primary, 0.12) 0%,
+      transparent 65%
+    );
+    pointer-events: none;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: t.$space-4;
+  }
+
+  &__heading {
+    font-family: t.$font-display;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+  }
+
+  &__sub {
+    font-family: t.$font-body;
+    font-size: t.$font-size-lg;
+    color: t.$color-text-muted;
+    max-width: 52ch;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// LAYOUT
+// ══════════════════════════════════════════════════════════════════════════════
+
+.section {
+  @include t.section-spacing;
+}
+
+.contact-layout__inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: t.$space-12;
+  align-items: start;
+
+  @include t.tablet {
+    grid-template-columns: 1fr;
+  }
+
+  @include t.mobile {
+    grid-template-columns: 1fr;
+    gap: t.$space-10;
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BOOKING FORM
+// ══════════════════════════════════════════════════════════════════════════════
+
+.booking-form {
+  background: t.$color-surface;
+  border: 1px solid t.$color-border;
+  border-radius: var(--radius-lg);
+  padding: t.$space-10;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+
+  @include t.mobile {
+    padding: t.$space-6;
+  }
+
+  &__heading {
+    font-family: t.$font-display;
+    font-size: t.$font-size-2xl;
+    font-weight: 700;
+    color: t.$color-text;
+    margin: 0 0 t.$space-2;
+  }
+}
+
+// ─── Form Layout ─────────────────────────────────────────────────────────────
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: t.$space-6;
+
+  @include t.mobile {
+    grid-template-columns: 1fr;
+    gap: t.$space-4;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+
+  &--full {
+    grid-column: 1 / -1;
+  }
+}
+
+// ─── Labels ──────────────────────────────────────────────────────────────────
+
+.form-label {
+  font-family: t.$font-body;
+  font-size: t.$font-size-sm;
+  font-weight: 600;
+  color: t.$color-text-muted;
+  letter-spacing: 0.04em;
+
+  &__required {
+    color: t.$color-primary;
+    margin-left: 2px;
+  }
+}
+
+// ─── Input Wrapper (icon + input) ────────────────────────────────────────────
+
+.form-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  > i:first-child {
+    position: absolute;
+    left: t.$space-4;
+    color: t.$color-primary;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &--textarea {
+    align-items: flex-start;
+
+    > i:first-child {
+      top: t.$space-4;
     }
   }
 
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
+  &--select {
+    // chevron arrow sits on the right
+    .form-select-arrow {
+      position: absolute;
+      right: t.$space-4;
+      color: t.$color-text-muted;
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+  }
+}
 
-    @media (max-width: 992px) {
-      grid-template-columns: 1fr;
-      gap: 60px;
+// ─── Inputs ──────────────────────────────────────────────────────────────────
+
+.form-input {
+  width: 100%;
+  background: t.$color-tertiary;
+  border: 1px solid t.$color-border;
+  border-radius: var(--radius-md);
+  color: t.$color-text;
+  font-family: t.$font-body;
+  font-size: t.$font-size-base;
+  padding: t.$space-4 t.$space-4 t.$space-4 calc(t.$space-4 + 1.5rem + t.$space-3);
+  transition: border-color var(--transition-base),
+              box-shadow var(--transition-base),
+              background var(--transition-base);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+
+  &::placeholder {
+    color: t.$color-text-subtle;
+  }
+
+  &:hover {
+    border-color: rgba(t.$color-primary, 0.4);
+  }
+
+  &:focus {
+    border-color: t.$color-primary;
+    box-shadow: 0 0 0 3px rgba(t.$color-primary, 0.12);
+    background: rgba(t.$color-primary, 0.03);
+  }
+
+  // Select specific
+  &--select {
+    cursor: pointer;
+    padding-right: calc(t.$space-4 + 1.5rem);
+
+    option {
+      background: t.$color-surface;
+      color: t.$color-text;
     }
   }
 
-  .info-card {
-    background: var(--gray-light);
-    padding: 40px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 40px;
-
-    h2 {
-      color: var(--primary-pink);
-      margin-bottom: 20px;
-    }
-
-    .contact-item {
-      margin-bottom: 16px;
-      font-size: 1.1rem;
-
-      strong {
-        display: inline-block;
-        width: 80px;
-        color: var(--text-dark);
-      }
-
-      a {
-        color: var(--primary-pink);
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
+  // Date specific — force light text on dark bg
+  &--date {
+    color-scheme: dark;
   }
 
-  .social-section {
-    margin-bottom: 50px;
+  // Textarea
+  &--textarea {
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.6;
+  }
+}
 
-    h3 {
-      margin-bottom: 15px;
-      color: var(--text-dark);
-    }
+// ─── Submit Button ───────────────────────────────────────────────────────────
 
-    .social-links {
-      display: flex;
-      gap: 15px;
+.form-submit {
+  @include t.btn-primary;
+  justify-content: center;
+  font-size: t.$font-size-base;
+  padding: t.$space-4 t.$space-10;
+  margin-top: t.$space-2;
 
-      .social-btn {
-        background: var(--secondary-pink);
-        color: var(--text-dark);
-        padding: 14px 28px;
-        border-radius: var(--radius);
-        font-weight: 600;
-        transition: var(--transition);
-
-        &:hover {
-          background: var(--primary-pink);
-          color: white;
-        }
-      }
-    }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
   }
 
-  .contact-form {
-    h2 {
-      margin-bottom: 25px;
-      color: var(--primary-pink);
-    }
+  &--loading {
+    pointer-events: none;
+  }
+}
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
+// ─── Form Note ───────────────────────────────────────────────────────────────
 
-    input,
-    textarea {
-      padding: 18px 22px;
-      border: 2px solid var(--secondary-pink);
-      border-radius: var(--radius);
-      font-size: 1.05rem;
-      transition: var(--transition);
+.form-note {
+  display: flex;
+  align-items: center;
+  gap: t.$space-2;
+  font-family: t.$font-body;
+  font-size: t.$font-size-xs;
+  color: t.$color-text-subtle;
+  margin: 0;
 
-      &:focus {
-        border-color: var(--primary-pink);
-        box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.1);
-      }
-    }
+  i { color: t.$color-primary; }
+}
 
-    textarea {
-      resize: vertical;
-      min-height: 140px;
-    }
 
-    button {
-      align-self: flex-start;
-      padding: 18px 42px;
-      font-size: 1.1rem;
-    }
+// ══════════════════════════════════════════════════════════════════════════════
+// FORM STATES — Success & Error
+// ══════════════════════════════════════════════════════════════════════════════
+
+.form-success {
+  background: t.$color-surface;
+  border: 1px solid rgba(t.$color-primary, 0.3);
+  border-radius: var(--radius-lg);
+  padding: t.$space-16 t.$space-10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: t.$space-6;
+
+  &__icon {
+    font-size: 3.5rem;
+    color: t.$color-primary;
+    line-height: 1;
   }
 
-  .success-message {
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 16px 22px;
-    border-radius: var(--radius);
-    text-align: center;
-    margin-top: 20px;
+  &__heading {
+    font-family: t.$font-display;
+    font-size: t.$font-size-2xl;
+    font-weight: 700;
+    color: t.$color-text;
+    margin: 0;
+  }
+
+  &__body {
+    font-family: t.$font-body;
+    font-size: t.$font-size-md;
+    color: t.$color-text-muted;
+    max-width: 42ch;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  &__reset {
+    @include t.btn-outline;
+    margin-top: t.$space-2;
+  }
+}
+
+.form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: t.$space-3;
+  background: rgba(220, 60, 60, 0.08);
+  border: 1px solid rgba(220, 60, 60, 0.3);
+  border-radius: var(--radius-md);
+  padding: t.$space-4 t.$space-6;
+  font-family: t.$font-body;
+  font-size: t.$font-size-sm;
+  color: t.$color-text-muted;
+
+  > i { color: #e05555; margin-top: 2px; flex-shrink: 0; }
+
+  a {
+    color: t.$color-primary;
+    text-decoration: underline;
+  }
+
+  &__retry {
+    background: none;
+    border: none;
+    color: t.$color-primary;
+    font-family: t.$font-body;
+    font-size: t.$font-size-sm;
     font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    white-space: nowrap;
+
+    &:hover { opacity: 0.8; }
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SIDEBAR — Contact Cards, Social, Availability
+// ══════════════════════════════════════════════════════════════════════════════
+
+.info-col {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-8;
+  position: sticky;
+  top: 100px; // sits below sticky nav
+}
+
+// ─── Contact Cards ───────────────────────────────────────────────────────────
+
+.contact-cards {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+  background: t.$color-surface;
+  border: 1px solid t.$color-border;
+  border-radius: var(--radius-md);
+  padding: t.$space-4 t.$space-6;
+  text-decoration: none;
+  transition: border-color var(--transition-base),
+              box-shadow var(--transition-base),
+              transform var(--transition-base);
+
+  &:not(&--no-link):hover {
+    border-color: t.$color-border-hover;
+    box-shadow: var(--shadow-gold);
+    transform: translateX(4px);
   }
 
-  .map-container {
-    border-radius: var(--radius);
+  &__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-sm);
+    background: rgba(t.$color-primary, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: t.$color-primary;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: background var(--transition-base);
+  }
+
+  &:not(&--no-link):hover &__icon {
+    background: rgba(t.$color-primary, 0.18);
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    font-family: t.$font-body;
+    font-size: t.$font-size-xs;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: t.$color-text-subtle;
+  }
+
+  &__value {
+    font-family: t.$font-body;
+    font-size: t.$font-size-base;
+    font-weight: 500;
+    color: t.$color-text;
+    white-space: nowrap;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    text-overflow: ellipsis;
   }
 
-  .map-note {
+  &__arrow {
+    color: t.$color-text-subtle;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    transition: color var(--transition-base),
+                transform var(--transition-base);
+  }
+
+  &:not(&--no-link):hover &__arrow {
+    color: t.$color-primary;
+    transform: translateX(3px);
+  }
+}
+
+// ─── Social Block ────────────────────────────────────────────────────────────
+
+.social-block {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: t.$space-2;
+  }
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+  padding: t.$space-3 t.$space-4;
+  border-radius: var(--radius-sm);
+  font-family: t.$font-body;
+  font-size: t.$font-size-base;
+  color: t.$color-text-muted;
+  text-decoration: none;
+  transition: color var(--transition-base),
+              background var(--transition-base);
+
+  i {
+    width: 1.25rem;
     text-align: center;
-    margin-top: 16px;
-    color: var(--text-light);
-    font-style: italic;
+    color: t.$color-primary;
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    color: t.$color-primary;
+    background: rgba(t.$color-primary, 0.07);
+  }
+}
+
+// ─── Availability Note ───────────────────────────────────────────────────────
+
+.availability-note {
+  display: flex;
+  align-items: flex-start;
+  gap: t.$space-4;
+  background: rgba(t.$color-primary, 0.06);
+  border: 1px solid rgba(t.$color-primary, 0.2);
+  border-radius: var(--radius-md);
+  padding: t.$space-5 t.$space-6;
+
+  > i {
+    color: t.$color-primary;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  strong {
+    font-family: t.$font-body;
+    font-size: t.$font-size-sm;
+    font-weight: 700;
+    color: t.$color-text;
+  }
+
+  span {
+    font-family: t.$font-body;
+    font-size: t.$font-size-sm;
+    color: t.$color-text-muted;
+    line-height: 1.5;
   }
 }

@@ -3,7 +3,7 @@
 // src/app/common/component/footer/footer.component.scss
 // =============================================================================
 
-@use '../../../../../styles/theme' as t;
+@use '../../../../styles/theme' as t;
 
 // ─── Footer Wrapper ──────────────────────────────────────────────────────────
 
@@ -180,10 +180,7 @@
 
     &--location {
       cursor: default;
-
-      &:hover {
-        color: t.$color-text-muted;
-      }
+      &:hover { color: t.$color-text-muted; }
     }
   }
 
@@ -220,12 +217,10 @@
     margin: 0;
   }
 
-  &__built {
-    i {
-      color: t.$color-primary;
-      font-size: 0.75em;
-      margin-inline: 2px;
-    }
+  &__built i {
+    color: t.$color-primary;
+    font-size: 0.75em;
+    margin-inline: 2px;
   }
 
   @include t.mobile {

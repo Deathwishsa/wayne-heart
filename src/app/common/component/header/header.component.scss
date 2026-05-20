@@ -1,11 +1,9 @@
 // =============================================================================
 // HEADER COMPONENT STYLES
 // src/app/common/component/header/header.component.scss
-//
-// Uses ONLY variables from theme.scss — zero hardcoded hex values.
 // =============================================================================
 
-@use '../../../../../styles/theme' as t;
+@use '../../../../styles/theme' as t;
 
 // ─── Nav Wrapper ─────────────────────────────────────────────────────────────
 
@@ -22,10 +20,9 @@
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 2px solid t.$color-primary;
   box-shadow: 0 8px 32px -8px t.$color-primary-glow;
-  transition: box-shadow t.$transition-slow,
-              border-color t.$transition-slow;
+  transition: box-shadow var(--transition-slow),
+              border-color var(--transition-slow);
 
-  // Elevated state when user scrolls
   &.scrolled {
     box-shadow: 0 12px 40px -8px t.$color-primary-glow,
                 0 4px 16px rgba(0, 0, 0, 0.6);
@@ -54,11 +51,11 @@
   &__icon {
     font-size: 2rem;
     color: t.$color-primary;
-    transition: transform t.$transition-slow,
-                text-shadow t.$transition-slow;
+    transition: transform var(--transition-slow),
+                text-shadow var(--transition-slow);
   }
 
-  &:hover &__icon {
+  &:hover .nav-brand__icon {
     transform: scale(1.15) rotate(-8deg);
     text-shadow: 0 0 20px t.$color-primary;
   }
@@ -96,9 +93,8 @@
   align-items: center;
   gap: t.$space-2;
   list-style: none;
-  margin: 0;
+  margin: 0 0 0 auto;
   padding: 0;
-  margin-left: auto;
 
   @include t.until-lg {
     display: none;
@@ -181,13 +177,14 @@
   display: none;
   flex-direction: column;
   gap: t.$space-6;
-  padding: t.$space-8 t.$space-6;
-  border-top: 1px solid rgba(t.$color-primary, 0.2);
+  padding: 0 t.$space-6;
   background: rgba(10, 10, 10, 0.98);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s ease, opacity 0.3s ease;
   opacity: 0;
+  transition: max-height 0.4s ease,
+              padding 0.3s ease,
+              opacity 0.3s ease;
 
   @include t.until-lg {
     display: flex;
@@ -195,7 +192,9 @@
 
   &--open {
     max-height: 600px;
+    padding: t.$space-8 t.$space-6;
     opacity: 1;
+    border-top: 1px solid rgba(t.$color-primary, 0.2);
   }
 
   &__links {
@@ -233,9 +232,7 @@
       color: t.$color-primary;
       background: rgba(t.$color-primary, 0.08);
 
-      i {
-        opacity: 1;
-      }
+      i { opacity: 1; }
     }
   }
 

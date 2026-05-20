@@ -1,108 +1,272 @@
-<div class="contact-us">
-  <div class="container">
+<!-- ==========================================================================
+     CONTACT PAGE
+     src/app/page/contact-us/contact-us.component.html
+     ========================================================================== -->
 
-    <!-- Page Header -->
-    <div class="page-header">
-      <h1>Get In Touch</h1>
-      <p class="tagline">Ready for your luxury glow-up? We’re here to make it unforgettable.</p>
-      <a routerLink="/booking" class="btn-primary" style="margin-top: 20px; display: inline-block; background: var(--secondary-pink);">
-        Book Your Appointment Now
-      </a>
-    </div>
-
-    <div class="contact-grid">
-
-      <!-- LEFT COLUMN: Contact Info + Form -->
-      <div class="contact-left">
-
-        <!-- Contact Details -->
-        <div class="info-card">
-          <h2>{{ clientData.name }}</h2>
-          <p>{{ clientData.address }}</p>
-          
-          <div class="contact-item">
-            <strong>Phone:</strong> 
-            <a [href]="'tel:' + clientData.phone">{{ clientData.phone }}</a>
-          </div>
-          
-          <div class="contact-item">
-            <strong>Email:</strong> 
-            <a [href]="'mailto:' + clientData.email">{{ clientData.email }}</a>
-          </div>
-          
-          <div class="contact-item">
-            <strong>Hours:</strong> {{ clientData.businessHours }}
-          </div>
-        </div>
-
-        <!-- Social -->
-        <div class="social-section">
-          <h3>Follow Our Glam</h3>
-          <div class="social-links">
-            <a [href]="clientData.social.instagram" target="_blank" class="social-btn">Instagram</a>
-            <a *ngIf="clientData.social.facebook" [href]="clientData.social.facebook" target="_blank" class="social-btn">Facebook</a>
-          </div>
-        </div>
-
-        <!-- Contact Form -->
-        <div class="contact-form">
-          <h2>Send Us a Message</h2>
-          
-          <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
-            <input 
-              type="text" 
-              [(ngModel)]="formData.name" 
-              name="name" 
-              placeholder="Your Full Name" 
-              required>
-
-            <input 
-              type="email" 
-              [(ngModel)]="formData.email" 
-              name="email" 
-              placeholder="Your Email Address" 
-              required>
-
-            <input 
-              type="tel" 
-              [(ngModel)]="formData.phone" 
-              name="phone" 
-              placeholder="Your Phone Number">
-
-            <textarea 
-              [(ngModel)]="formData.message" 
-              name="message" 
-              placeholder="Tell us about your dream look..." 
-              rows="6" 
-              required></textarea>
-
-            <button type="submit" class="btn-primary">Send Message</button>
-          </form>
-
-          <p *ngIf="submitted" class="success-message">
-            ✨ Thank you! Your message has been received.  
-            We’ll reply within 24 hours.
-          </p>
-        </div>
-      </div>
-
-      <!-- RIGHT COLUMN: Map -->
-      <div class="contact-right">
-        <h2>Find Us in Cape Town</h2>
-        <div class="map-container">
-          <iframe 
-            [src]="mapUrl"
-            width="100%" 
-            height="520" 
-            style="border:0; border-radius: var(--radius);" 
-            loading="lazy" 
-            allowfullscreen>
-          </iframe>
-        </div>
-        <p class="map-note">
-          📍 123 Beauty Lane, Cape Town, 8001
-        </p>
-      </div>
-    </div>
+<!-- ══════════════════════════════════════════════════════════════════════════
+     PAGE HERO
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="page-hero" aria-label="Contact page header">
+  <div class="page-hero__glow" aria-hidden="true"></div>
+  <div class="page-hero__content container">
+    <span class="section-label">Let's Make It Happen</span>
+    <h1 class="page-hero__heading gold-gradient-text">Book {{ business.stageName }}</h1>
+    <p class="page-hero__sub">
+      Fill in the form below and {{ business.name }} will get back to you within 24 hours.
+    </p>
   </div>
-</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     MAIN LAYOUT — Form + Sidebar
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="contact-layout section" aria-label="Contact form and info">
+  <div class="contact-layout__inner container">
+
+
+    <!-- ── FORM COLUMN ─────────────────────────────────────────────────── -->
+    <div class="form-col">
+
+      <!-- ── Success State ── -->
+      <div *ngIf="formStatus === 'success'" class="form-success" role="alert">
+        <div class="form-success__icon">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        </div>
+        <h2 class="form-success__heading">Message received!</h2>
+        <p class="form-success__body">
+          Thanks for reaching out. {{ business.name }} will be in touch within 24 hours.
+        </p>
+        <button class="btn-outline form-success__reset" (click)="resetForm()">
+          Send Another Message
+        </button>
+      </div>
+
+      <!-- ── Error State ── -->
+      <div *ngIf="formStatus === 'error'" class="form-error" role="alert">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        <span>Something went wrong — please try again or email directly at
+          <a [href]="'mailto:' + business.email">{{ business.email }}</a>.
+        </span>
+        <button class="form-error__retry" (click)="formStatus = 'idle'">Try again</button>
+      </div>
+
+      <!-- ── The Form ── -->
+      <form
+        *ngIf="formStatus === 'idle' || formStatus === 'submitting'"
+        class="booking-form"
+        (ngSubmit)="onSubmit()"
+        #contactForm="ngForm"
+        novalidate
+        aria-label="Booking enquiry form"
+      >
+        <h2 class="booking-form__heading">Booking Enquiry</h2>
+
+        <!-- Row: Name + Email -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="name">
+              Full Name <span class="form-label__required" aria-label="required">*</span>
+            </label>
+            <div class="form-input-wrap">
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                class="form-input"
+                placeholder="Your full name"
+                [(ngModel)]="form.name"
+                required
+                autocomplete="name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">
+              Email Address <span class="form-label__required" aria-label="required">*</span>
+            </label>
+            <div class="form-input-wrap">
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                class="form-input"
+                placeholder="your@email.com"
+                [(ngModel)]="form.email"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Phone + Event Type -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone / WhatsApp</label>
+            <div class="form-input-wrap">
+              <i class="fa-solid fa-phone" aria-hidden="true"></i>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                class="form-input"
+                placeholder="+27 82 000 0000"
+                [(ngModel)]="form.phone"
+                autocomplete="tel"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="eventType">
+              Event Type <span class="form-label__required" aria-label="required">*</span>
+            </label>
+            <div class="form-input-wrap form-input-wrap--select">
+              <i class="fa-solid fa-calendar-star" aria-hidden="true"></i>
+              <select
+                id="eventType"
+                name="eventType"
+                class="form-input form-input--select"
+                [(ngModel)]="form.eventType"
+                required
+              >
+                <option value="" disabled>Select event type</option>
+                <option *ngFor="let service of business.services" [value]="service.title">
+                  {{ service.title }}
+                </option>
+                <option value="Other">Other</option>
+              </select>
+              <i class="fa-solid fa-chevron-down form-select-arrow" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Event Date (full width) -->
+        <div class="form-row">
+          <div class="form-group form-group--full">
+            <label class="form-label" for="eventDate">
+              Event Date <span class="form-label__required" aria-label="required">*</span>
+            </label>
+            <div class="form-input-wrap">
+              <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+              <input
+                id="eventDate"
+                name="eventDate"
+                type="date"
+                class="form-input form-input--date"
+                [(ngModel)]="form.eventDate"
+                [min]="minDate"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group">
+          <label class="form-label" for="message">
+            Tell Me About Your Event
+            <span class="form-label__required" aria-label="required">*</span>
+          </label>
+          <div class="form-input-wrap form-input-wrap--textarea">
+            <i class="fa-solid fa-comment-lines" aria-hidden="true"></i>
+            <textarea
+              id="message"
+              name="message"
+              class="form-input form-input--textarea"
+              placeholder="Venue, guest count, vibe you're going for, anything else I should know..."
+              [(ngModel)]="form.message"
+              required
+              rows="5"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="btn-primary form-submit"
+          [disabled]="formStatus === 'submitting' || !contactForm.valid"
+          [class.form-submit--loading]="formStatus === 'submitting'"
+        >
+          <ng-container *ngIf="formStatus !== 'submitting'">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            Send Enquiry
+          </ng-container>
+          <ng-container *ngIf="formStatus === 'submitting'">
+            <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+            Sending...
+          </ng-container>
+        </button>
+
+        <p class="form-note">
+          <i class="fa-solid fa-shield-check" aria-hidden="true"></i>
+          Your details are kept private and never shared.
+        </p>
+
+      </form>
+    </div>
+
+
+    <!-- ── SIDEBAR COLUMN ──────────────────────────────────────────────── -->
+    <aside class="info-col" aria-label="Contact information">
+
+      <!-- Contact Cards -->
+      <div class="contact-cards">
+        <a
+          *ngFor="let card of contactCards"
+          [href]="card.href || null"
+          class="contact-card"
+          [class.contact-card--no-link]="!card.href"
+          [attr.target]="card.href ? '_self' : null"
+        >
+          <div class="contact-card__icon">
+            <i [class]="card.icon" aria-hidden="true"></i>
+          </div>
+          <div class="contact-card__text">
+            <span class="contact-card__label">{{ card.label }}</span>
+            <span class="contact-card__value">{{ card.value }}</span>
+          </div>
+          <i
+            *ngIf="card.href"
+            class="fa-solid fa-arrow-right contact-card__arrow"
+            aria-hidden="true"
+          ></i>
+        </a>
+      </div>
+
+      <!-- Social Links -->
+      <div class="social-block">
+        <span class="section-label">Follow the Journey</span>
+        <div class="social-block__links">
+          <a
+            *ngFor="let link of business.social"
+            [href]="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            [attr.aria-label]="link.platform"
+          >
+            <i [class]="link.icon" aria-hidden="true"></i>
+            <span>{{ link.platform }}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Availability Note -->
+      <div class="availability-note">
+        <i class="fa-solid fa-clock" aria-hidden="true"></i>
+        <div>
+          <strong>Fast response guaranteed</strong>
+          <span>All enquiries answered within 24 hours.</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</section>

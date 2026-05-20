@@ -1,54 +1,188 @@
-<div class="gallery-page section-padding" (keydown)="onKeyDown($event)" tabindex="0">
+<!-- ==========================================================================
+     GALLERY PAGE
+     src/app/page/gallery/gallery.component.html
+     ========================================================================== -->
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     PAGE HERO
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="page-hero" aria-label="Gallery page header">
+  <div class="page-hero__glow" aria-hidden="true"></div>
+  <div class="page-hero__content container">
+    <span class="section-label">The Highlight Reel</span>
+    <h1 class="page-hero__heading gold-gradient-text">See the Energy</h1>
+    <p class="page-hero__sub">
+      Every event tells a story. Here are some of ours.
+    </p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     FILTER TABS
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="filter-bar" role="tablist" aria-label="Filter gallery by event type">
+  <div class="filter-bar__inner container">
+    <button
+      *ngFor="let cat of categories"
+      class="filter-tab"
+      [class.filter-tab--active]="activeCategory === cat"
+      (click)="setCategory(cat)"
+      role="tab"
+      [attr.aria-selected]="activeCategory === cat"
+    >
+      {{ cat }}
+      <span
+        *ngIf="cat !== 'All'"
+        class="filter-tab__count"
+      >{{ business.galleryItems | filterCount : cat }}</span>
+    </button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     MASONRY GALLERY GRID
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="gallery-section" aria-label="Photo gallery">
   <div class="container">
-    <div class="page-header">
-      <h1>Our Gallery</h1>
-      <p class="subtitle">Moments of beauty, captured</p>
-    </div>
 
-    <!-- Filter Tabs -->
-    <div class="filters">
-      <button 
-        [class.active]="activeFilter === 'all'"
-        (click)="setFilter('all')">All</button>
-      <button 
-        [class.active]="activeFilter === 'hair'"
-        (click)="setFilter('hair')">Hair</button>
-      <button 
-        [class.active]="activeFilter === 'nails'"
-        (click)="setFilter('nails')">Nails</button>
-      <button 
-        [class.active]="activeFilter === 'combo'"
-        (click)="setFilter('combo')">Combos</button>
-    </div>
+    <div class="masonry-grid" *ngIf="filteredItems.length > 0">
+      <div
+        *ngFor="let item of filteredItems; let i = index"
+        class="gallery-item"
+        (click)="openLightbox(i)"
+        role="button"
+        tabindex="0"
+        [attr.aria-label]="'View photo: ' + item.caption"
+        (keydown.enter)="openLightbox(i)"
+        (keydown.space)="openLightbox(i)"
+      >
+        <div class="gallery-item__img-wrap">
+          <img
+            [src]="item.src"
+            [alt]="item.alt"
+            class="gallery-item__img"
+            loading="lazy"
+          />
+        </div>
 
-    <!-- Masonry Grid -->
-    <div class="gallery-grid">
-      <div class="gallery-item" 
-           *ngFor="let image of filteredImages; let i = index"
-           (click)="openLightbox(i)">
-        <img [src]="image.url" [alt]="image.alt" loading="lazy">
-        <div class="overlay">
-          <span class="view-text">View Full</span>
+        <div class="gallery-item__overlay" aria-hidden="true">
+          <div class="gallery-item__overlay-content">
+            <i class="fa-solid fa-expand gallery-item__expand-icon"></i>
+            <span class="gallery-item__caption">{{ item.caption }}</span>
+            <span class="gallery-item__category-tag">{{ item.category }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Lightbox Modal -->
-  <div class="lightbox" *ngIf="selectedImageIndex !== null" (click)="closeLightbox()">
-    <div class="lightbox-content" (click)="$event.stopImmediatePropagation()">
-      <button class="close-btn" (click)="closeLightbox()" aria-label="Close">✕</button>
-      
-      <img [src]="filteredImages[selectedImageIndex].url" 
-           [alt]="filteredImages[selectedImageIndex].alt">
-
-      <div class="lightbox-caption">
-        <p>{{ filteredImages[selectedImageIndex].alt }}</p>
-      </div>
-
-      <!-- Navigation -->
-      <button class="nav-btn prev" (click)="prevImage()" aria-label="Previous">‹</button>
-      <button class="nav-btn next" (click)="nextImage()" aria-label="Next">›</button>
+    <!-- Empty state -->
+    <div *ngIf="filteredItems.length === 0" class="gallery-empty">
+      <i class="fa-solid fa-images" aria-hidden="true"></i>
+      <p>No photos in this category yet — check back soon.</p>
     </div>
+
   </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     BOOKING CTA
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="cta-banner" aria-label="Booking call to action">
+  <div class="cta-banner__glow" aria-hidden="true"></div>
+  <div class="cta-banner__inner container">
+    <div class="cta-banner__text">
+      <h2 class="cta-banner__heading">Want your event to look like this?</h2>
+      <p class="cta-banner__sub">Let's create something unforgettable together.</p>
+    </div>
+    <a [routerLink]="business.ctaRoute" class="btn-primary cta-banner__btn">
+      <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+      Book Wayne Heart
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     LIGHTBOX OVERLAY
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div
+  *ngIf="lightboxOpen"
+  class="lightbox"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="lightboxItem.caption"
+>
+
+  <!-- Close button -->
+  <button class="lightbox__close" (click)="closeLightbox()" aria-label="Close lightbox">
+    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+  </button>
+
+  <!-- Counter -->
+  <div class="lightbox__counter" aria-live="polite">
+    {{ lightboxIndex + 1 }} / {{ filteredItems.length }}
+  </div>
+
+  <!-- Image stage -->
+  <div class="lightbox__stage">
+
+    <!-- Prev button -->
+    <button
+      class="lightbox__nav lightbox__nav--prev"
+      (click)="lightboxPrev()"
+      aria-label="Previous image"
+    >
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
+
+    <!-- Image -->
+    <div class="lightbox__img-wrap">
+      <div *ngIf="lightboxLoading" class="lightbox__spinner" aria-label="Loading">
+        <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+      </div>
+      <img
+        [src]="lightboxItem.src"
+        [alt]="lightboxItem.alt"
+        class="lightbox__img"
+        [class.lightbox__img--visible]="!lightboxLoading"
+        (load)="onImageLoad()"
+        draggable="false"
+      />
+    </div>
+
+    <!-- Next button -->
+    <button
+      class="lightbox__nav lightbox__nav--next"
+      (click)="lightboxNext()"
+      aria-label="Next image"
+    >
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+
+  </div>
+
+  <!-- Caption bar -->
+  <div class="lightbox__caption-bar">
+    <span class="lightbox__caption">{{ lightboxItem.caption }}</span>
+    <span class="lightbox__category">{{ lightboxItem.category }}</span>
+  </div>
+
+  <!-- Thumbnail strip -->
+  <div class="lightbox__thumbs" role="list" aria-label="Image thumbnails">
+    <button
+      *ngFor="let item of filteredItems; let i = index"
+      class="lightbox__thumb"
+      [class.lightbox__thumb--active]="i === lightboxIndex"
+      (click)="lightboxIndex = i; lightboxLoading = true"
+      [attr.aria-label]="'Go to image ' + (i + 1)"
+      role="listitem"
+    >
+      <img [src]="item.src" [alt]="item.alt" loading="lazy" />
+    </button>
+  </div>
+
 </div>

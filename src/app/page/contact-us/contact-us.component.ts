@@ -1,49 +1,95 @@
-import { Component, inject } from '@angular/core';
+// =============================================================================
+// CONTACT PAGE COMPONENT
+// src/app/page/contact-us/contact-us.component.ts
+// =============================================================================
+
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { DataService } from '../../services/data.service';
+import { RouterModule } from '@angular/router';
+import { BUSINESS } from '../../common/constant/business';
+
+interface ContactForm {
+  name     : string;
+  email    : string;
+  phone    : string;
+  eventType: string;
+  eventDate: string;
+  message  : string;
+}
+
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 @Component({
   selector: 'app-contact-us',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './contact-us.component.html',
-  styleUrls: ['./contact-us.component.scss']
+  styleUrls: ['./contact-us.component.scss'],
 })
 export class ContactUsComponent {
-  private dataService = inject(DataService);
-  private sanitizer = inject(DomSanitizer);
 
-  clientData = this.dataService.getClientData();
+  business = BUSINESS;
 
-  formData = {
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
+  form: ContactForm = {
+    name     : '',
+    email    : '',
+    phone    : '',
+    eventType: '',
+    eventDate: '',
+    message  : '',
   };
 
-  submitted = false;
+  formStatus: FormStatus = 'idle';
 
-  get mapUrl(): SafeResourceUrl {
-    const { lat, lng } = this.clientData.googleMapCoords;
-    const url = `https://www.google.com/maps?q=${lat},${lng}&hl=en&z=15&output=embed`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  // Min date for the date picker — today
+  get minDate(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
-  onSubmit() {
-    console.log('📧 Contact form submitted:', this.formData);
-    // TODO: Connect to backend / email service later
-    this.submitted = true;
+  // Direct contact info cards (pulled from business.ts — add fields there to extend)
+  contactCards = [
+    {
+      icon   : 'fa-solid fa-phone',
+      label  : 'Call or WhatsApp',
+      value  : BUSINESS.phone,
+      href   : `tel:${BUSINESS.phone}`,
+    },
+    {
+      icon   : 'fa-solid fa-envelope',
+      label  : 'Email',
+      value  : BUSINESS.email,
+      href   : `mailto:${BUSINESS.email}`,
+    },
+    {
+      icon   : 'fa-solid fa-location-dot',
+      label  : 'Based in',
+      value  : BUSINESS.location,
+      href   : null,
+    },
+  ];
 
-    // Reset form
-    this.formData = { name: '', email: '', phone: '', message: '' };
+  onSubmit(): void {
+    if (this.formStatus === 'submitting') return;
 
-    // Auto-hide success message
+    this.formStatus = 'submitting';
+
+    // Simulate async submission — replace with real API call / EmailJS / FormSpree
     setTimeout(() => {
-      this.submitted = false;
-    }, 6000);
+      // Swap to 'error' to test the error state
+      this.formStatus = 'success';
+    }, 1800);
+  }
+
+  resetForm(): void {
+    this.form = {
+      name     : '',
+      email    : '',
+      phone    : '',
+      eventType: '',
+      eventDate: '',
+      message  : '',
+    };
+    this.formStatus = 'idle';
   }
 }
