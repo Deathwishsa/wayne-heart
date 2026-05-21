@@ -10,6 +10,8 @@ import {
   HostListener,
   ElementRef,
   AfterViewInit,
+  Inject,
+  PLATFORM_ID
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterCountPipe } from '../../common/pipe/filter-count.pipe';
@@ -102,7 +104,10 @@ export class GalleryComponent implements OnInit, AfterViewInit, OnDestroy {
   // ── Scroll reveal via IntersectionObserver
   private observer!: IntersectionObserver;
 
-  constructor(private elRef: ElementRef) {}
+  constructor(
+    private elRef: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {}
 
