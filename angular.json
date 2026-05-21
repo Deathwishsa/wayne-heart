@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "get-glamorous": {
+    "wayne-heart": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -72,10 +72,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "get-glamorous:build:production"
+              "buildTarget": "wayne-heart:build:production"
             },
             "development": {
-              "buildTarget": "get-glamorous:build:development"
+              "buildTarget": "wayne-heart:build:development"
             }
           },
           "defaultConfiguration": "development"
