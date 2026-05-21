@@ -1,5 +1,5 @@
-# === Angular Deploy Script v10 - Force Pure Static Build ===
-Write-Host "🚀 Angular Deploy to Live - Starting (v10)..." -ForegroundColor Cyan
+# === Angular Deploy Script v7 - Interactive GitHub vs Domain (Fixed) ===
+Write-Host "🚀 Angular Deploy to Live - Starting (v7)..." -ForegroundColor Cyan
 
 # 1. Stash any changes to the script
 Write-Host "Step 1: Stashing script changes..." -ForegroundColor Yellow
@@ -35,19 +35,13 @@ else {
     Write-Host "→ Custom Domain / Root mode selected (base-href = /)" -ForegroundColor Yellow
 }
 
-# 5. FORCE Pure Static Browser Build
-Write-Host "Step 5: Building Pure Static Browser-only version..." -ForegroundColor Yellow
-npx ng build --configuration production `
-    --output-path dist/live-build `
-    --base-href $baseHref `
-    --prerender false `
-    --ssr false
+# 5. Build with correct base-href
+Write-Host "Step 5: Building Angular with base-href '$baseHref'..." -ForegroundColor Yellow
+npx ng build --configuration production --output-path dist/live-build --base-href $baseHref
 
 # Check build
 if (-Not (Test-Path "dist/live-build/browser/index.html")) {
     Write-Host "❌ Build failed - index.html not found in dist/live-build/browser/" -ForegroundColor Red
-    Write-Host "Try running this command manually to see full error:" -ForegroundColor Yellow
-    Write-Host "npx ng build --configuration production --prerender false --ssr false" -ForegroundColor Gray
     Read-Host "Press Enter to exit"
     exit 1
 }
@@ -55,6 +49,8 @@ Write-Host "✅ Build successful!" -ForegroundColor Green
 
 # 6. Clean everything except script + .git + dist
 Write-Host "Step 6: Cleaning non-build files..." -ForegroundColor Yellow
+
+# Safer cleaning - explicitly remove only unwanted items
 Get-ChildItem -Path . | Where-Object {
     $_.Name -ne "deploy-to-live.ps1" -and 
     $_.Name -ne ".git" -and 
