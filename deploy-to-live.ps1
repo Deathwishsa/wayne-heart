@@ -1,5 +1,5 @@
-# === Angular Deploy Script v8 - Static Build (No SSR) ===
-Write-Host "🚀 Angular Deploy to Live - Starting (v8)..." -ForegroundColor Cyan
+# === Angular Deploy Script v9 - Force Static Browser Build ===
+Write-Host "🚀 Angular Deploy to Live - Starting (v9)..." -ForegroundColor Cyan
 
 # 1. Stash any changes to the script
 Write-Host "Step 1: Stashing script changes..." -ForegroundColor Yellow
@@ -35,13 +35,16 @@ else {
     Write-Host "→ Custom Domain / Root mode selected (base-href = /)" -ForegroundColor Yellow
 }
 
-# 5. Build as STATIC (disable SSR/prerendering)
-Write-Host "Step 5: Building Angular as Static Site (no SSR)..." -ForegroundColor Yellow
-npx ng build --configuration production --output-path dist/live-build --base-href $baseHref
+# 5. FORCE Static Browser-Only Build (disable SSR + prerender)
+Write-Host "Step 5: Building Angular as Static Browser-only site..." -ForegroundColor Yellow
+npx ng build --configuration production `
+    --output-path dist/live-build `
+    --base-href $baseHref `
+    --prerender false
 
 # Check build
 if (-Not (Test-Path "dist/live-build/browser/index.html")) {
-    Write-Host "❌ Build failed - index.html not found in dist/live-build/browser/" -ForegroundColor Red
+    Write-Host "❌ Build failed - index.html not found!" -ForegroundColor Red
     Read-Host "Press Enter to exit"
     exit 1
 }
