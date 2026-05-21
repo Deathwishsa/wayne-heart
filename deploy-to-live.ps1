@@ -1,5 +1,5 @@
-# === Angular Deploy Script v7 - Interactive GitHub vs Domain (Fixed) ===
-Write-Host "🚀 Angular Deploy to Live - Starting (v7)..." -ForegroundColor Cyan
+# === Angular Deploy Script v8 - Static Build (No SSR) ===
+Write-Host "🚀 Angular Deploy to Live - Starting (v8)..." -ForegroundColor Cyan
 
 # 1. Stash any changes to the script
 Write-Host "Step 1: Stashing script changes..." -ForegroundColor Yellow
@@ -35,8 +35,8 @@ else {
     Write-Host "→ Custom Domain / Root mode selected (base-href = /)" -ForegroundColor Yellow
 }
 
-# 5. Build with correct base-href
-Write-Host "Step 5: Building Angular with base-href '$baseHref'..." -ForegroundColor Yellow
+# 5. Build as STATIC (disable SSR/prerendering)
+Write-Host "Step 5: Building Angular as Static Site (no SSR)..." -ForegroundColor Yellow
 npx ng build --configuration production --output-path dist/live-build --base-href $baseHref
 
 # Check build
@@ -49,8 +49,6 @@ Write-Host "✅ Build successful!" -ForegroundColor Green
 
 # 6. Clean everything except script + .git + dist
 Write-Host "Step 6: Cleaning non-build files..." -ForegroundColor Yellow
-
-# Safer cleaning - explicitly remove only unwanted items
 Get-ChildItem -Path . | Where-Object {
     $_.Name -ne "deploy-to-live.ps1" -and 
     $_.Name -ne ".git" -and 
