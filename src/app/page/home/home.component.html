@@ -4,23 +4,24 @@
      ========================================================================== -->
 
 <!-- ══════════════════════════════════════════════════════════════════════════
-     HERO
+     HERO — Single pulsing background image
      ══════════════════════════════════════════════════════════════════════════ -->
 <section class="hero" aria-label="Hero">
 
-  <!-- Background Carousel -->
-  <div class="hero__carousel" aria-hidden="true">
-    <div
-      *ngFor="let img of heroImages; let i = index"
-      class="hero__slide"
-      [class.hero__slide--active]="i === currentSlide"
-      [style.backgroundImage]="'url(' + img + ')'"
-    ></div>
-    <div class="hero__overlay"></div>
-    <div class="hero__spotlight"></div>
-  </div>
+  <!-- Background image with pulse effect -->
+  <div
+    class="hero__bg"
+    [style.backgroundImage]="'url(' + heroImage + ')'"
+    aria-hidden="true"
+  ></div>
 
-  <!-- Content -->
+  <!-- Dark base overlay -->
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <!-- Animated gold glow pulse layer -->
+  <div class="hero__pulse" aria-hidden="true"></div>
+
+  <!-- Content — unchanged from before -->
   <div class="hero__content container">
 
     <span class="hero__badge">
@@ -47,27 +48,7 @@
         {{ service.title }}
       </span>
     </div>
-  </div>
 
-  <!-- Carousel Controls -->
-  <button class="hero__prev" (click)="prevSlide()" aria-label="Previous slide">
-    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-  </button>
-  <button class="hero__next" (click)="nextSlide()" aria-label="Next slide">
-    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-  </button>
-
-  <!-- Indicators -->
-  <div class="hero__indicators" role="tablist" aria-label="Carousel slides">
-    <button
-      *ngFor="let img of heroImages; let i = index"
-      class="hero__indicator"
-      [class.hero__indicator--active]="i === currentSlide"
-      (click)="goToSlide(i)"
-      role="tab"
-      [attr.aria-selected]="i === currentSlide"
-      [attr.aria-label]="'Slide ' + (i + 1)"
-    ></button>
   </div>
 
 </section>

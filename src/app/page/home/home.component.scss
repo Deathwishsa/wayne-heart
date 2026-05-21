@@ -25,9 +25,11 @@
 }
 
 
-// ══════════════════════════════════════════════════════════════════════════════
-// HERO
-// ══════════════════════════════════════════════════════════════════════════════
+// =============================================================================
+// HERO SECTION — replace everything from .hero { ... } down to the
+// @keyframes spotlight-pulse block in your home.component.scss.
+// Everything below // STATS BAR stays exactly as it is.
+// =============================================================================
 
 .hero {
   position: relative;
@@ -38,51 +40,52 @@
   justify-content: center;
   overflow: hidden;
 
-  &__carousel {
-    position: absolute;
-    inset: 0;
-  }
-
-  &__slide {
+  // ── Static background image ──────────────────────────────────────────────
+  // Always visible. Gently breathes between 70% and 100% opacity.
+  // Never goes invisible — the image is always the dominant element.
+  &__bg {
     position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center;
-    opacity: 0;
-    transform: scale(1.06);
-    transition: opacity 1.2s ease, transform 6s ease;
-
-    &--active {
-      opacity: 1;
-      transform: scale(1);
-    }
+    background-repeat: no-repeat;
+    animation: hero-breathe 10s ease-in-out infinite;
   }
 
+  // ── Dark gradient overlay ────────────────────────────────────────────────
+  // Kept light enough that the image shows through clearly.
+  // Heavier at the bottom so text always stays readable.
   &__overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(10, 10, 10, 0.5) 0%,
-      rgba(10, 10, 10, 0.72) 55%,
-      rgba(10, 10, 10, 0.92) 100%
+      rgba(10, 10, 10, 0.20) 0%,
+      rgba(10, 10, 10, 0.35) 45%,
+      rgba(10, 10, 10, 0.75) 100%
     );
     z-index: 1;
   }
 
-  &__spotlight {
+  // ── Gold glow pulse ──────────────────────────────────────────────────────
+  // Subtle radial glow that blooms at the image's brightest moment.
+  // Kept restrained so it enhances rather than obscures the photo.
+  &__pulse {
     position: absolute;
     inset: 0;
     background: radial-gradient(
-      ellipse at 45% 30%,
-      rgba(t.$color-primary, 0.2) 0%,
+      ellipse at 50% 45%,
+      rgba(248, 213, 104, 0.22) 0%,
+      rgba(248, 213, 104, 0.06) 40%,
       transparent 65%
     );
-    animation: spotlight-pulse 10s ease-in-out infinite alternate;
     z-index: 2;
     pointer-events: none;
+    animation: hero-gold-pulse 10s ease-in-out infinite;
+    animation-delay: 1.5s;
   }
 
+  // ── Content ──────────────────────────────────────────────────────────────
   &__content {
     position: relative;
     z-index: 10;
@@ -97,7 +100,7 @@
     display: inline-flex;
     align-items: center;
     gap: t.$space-3;
-    background: rgba(10, 10, 10, 0.7);
+    background: rgba(10, 10, 10, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1.5px solid rgba(t.$color-primary, 0.4);
@@ -163,66 +166,48 @@
 
     i { color: t.$color-primary; }
   }
-
-  &__prev,
-  &__next {
-    position: absolute;
-    bottom: t.$space-12;
-    z-index: 20;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(8px);
-    border: 1px solid t.$color-border;
-    border-radius: var(--radius-md);
-    color: t.$color-text;
-    font-size: 1.25rem;
-    padding: t.$space-4;
-    cursor: pointer;
-    transition: background var(--transition-base),
-                color var(--transition-base),
-                border-color var(--transition-base),
-                transform var(--transition-base);
-
-    &:hover {
-      background: t.$color-primary;
-      color: #111;
-      border-color: t.$color-primary;
-      transform: scale(1.08);
-    }
-  }
-
-  &__prev { left: t.$space-8; }
-  &__next { right: t.$space-8; }
-
-  &__indicators {
-    position: absolute;
-    bottom: t.$space-6;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 20;
-    display: flex;
-    gap: t.$space-3;
-  }
-
-  &__indicator {
-    width: 28px;
-    height: 4px;
-    border-radius: var(--radius-pill);
-    border: none;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: background var(--transition-base),
-                width var(--transition-slow);
-
-    &--active {
-      background: t.$color-primary;
-      width: 48px;
-    }
-  }
 }
 
-@keyframes spotlight-pulse {
-  0%   { opacity: 0.6; }
-  100% { opacity: 1; }
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+
+// Image breathes between 70% and 100% — always visible, never disappears.
+// The subtle scale shift (1.02 → 1.0) adds depth without being distracting.
+@keyframes hero-breathe {
+  0%   { opacity: 0.7;  transform: scale(1.02); }
+  50%  { opacity: 1;    transform: scale(1);    }
+  100% { opacity: 0.7;  transform: scale(1.02); }
+}
+
+// Gold glow blooms in during the bright phase, fades during the dim phase.
+// Delayed 1.5s so it peaks just after the image is at its brightest.
+@keyframes hero-gold-pulse {
+  0%   { opacity: 0;   }
+  30%  { opacity: 0;   }
+  60%  { opacity: 1;   }
+  80%  { opacity: 0.4; }
+  100% { opacity: 0;   }
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+
+// The background image slowly breathes between 85% and 100% opacity.
+// At its dimmest it's almost camouflaged into the overlay; at its brightest
+// it fully reveals before fading back. Total cycle: 10s.
+@keyframes hero-breathe {
+  0%   { opacity: 0.7;  transform: scale(1.02); }
+  50%  { opacity: 1;    transform: scale(1);    }
+  100% { opacity: 0.7;  transform: scale(1.02); }
+}
+
+
+// Gold radial glow blooms in as image reveals, peaks, then fades with it.
+// Delayed 2s so the glow peaks just after the image is brightest.
+@keyframes hero-gold-pulse {
+  0%   { opacity: 0;    }
+  40%  { opacity: 0;    }  // holds dark while image starts appearing
+  65%  { opacity: 1;    }  // peaks — full warm gold bloom
+  85%  { opacity: 0.3;  }  // pulls back
+  100% { opacity: 0;    }  // gone — resets for next cycle
 }
 
 
@@ -333,7 +318,6 @@
     box-shadow: var(--shadow-gold);
 
     i { font-size: 1.5rem; }
-
     span { line-height: 1.3; }
 
     @include t.mobile {

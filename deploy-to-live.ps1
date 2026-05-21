@@ -25,9 +25,9 @@ Write-Host "Enter [g] for GitHub Pages or [d] for Custom Domain: " -NoNewline
 $choice = Read-Host
 
 if ($choice -eq "g" -or $choice -eq "G") {
-    $baseHref = "/get-glamorous/"
+    $baseHref = "/wayne-heart/"
     $deployType = "GitHub"
-    Write-Host "→ GitHub Pages mode selected (base-href = /get-glamorous/)" -ForegroundColor Yellow
+    Write-Host "→ GitHub Pages mode selected (base-href = /wayne-heart/)" -ForegroundColor Yellow
 }
 else {
     $baseHref = "/"
@@ -77,7 +77,7 @@ git push origin live --force
 git stash pop -q 2>$null
 
 Write-Host "`n🎉 SUCCESS! Deployment completed." -ForegroundColor Green
-Write-Host "Live site: https://Deathwishsa.github.io/get-glamorous/" -ForegroundColor Magenta
-Write-Host "GitHub live branch: https://github.com/Deathwishsa/get-glamorous/tree/live" -ForegroundColor Magenta
+Write-Host "Live site: https://Deathwishsa.github.io/wayne-heart/" -ForegroundColor Magenta
+Write-Host "GitHub live branch: https://github.com/Deathwishsa/wayne-heart/tree/live" -ForegroundColor Magenta
 
 Read-Host "`nPress Enter to close window"
