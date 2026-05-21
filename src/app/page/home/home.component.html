@@ -8,12 +8,8 @@
      ══════════════════════════════════════════════════════════════════════════ -->
 <section class="hero" aria-label="Hero">
 
-  <!-- Background image with pulse effect -->
-  <div
-    class="hero__bg"
-    [style.backgroundImage]="'url(' + heroImage + ')'"
-    aria-hidden="true"
-  ></div>
+  <!-- Background image — set via SCSS background-image, not Angular binding -->
+  <div class="hero__bg" aria-hidden="true"></div>
 
   <!-- Dark base overlay -->
   <div class="hero__overlay" aria-hidden="true"></div>
@@ -21,7 +17,7 @@
   <!-- Animated gold glow pulse layer -->
   <div class="hero__pulse" aria-hidden="true"></div>
 
-  <!-- Content — unchanged from before -->
+  <!-- Content -->
   <div class="hero__content container">
 
     <span class="hero__badge">
@@ -85,7 +81,7 @@
 
     <div class="about__media">
       <img
-        src="https://picsum.photos/id/1005/900/700"
+        src="assets/images/homepage_profile_pic.JPG"
         alt="Wayne Heart performing on stage"
         class="about__image"
         loading="lazy"

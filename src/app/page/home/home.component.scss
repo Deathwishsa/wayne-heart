@@ -1,35 +1,29 @@
 // =============================================================================
 // HOME PAGE STYLES
 // src/app/page/home/home.component.scss
+//
+// NOTE: .hero__bg background-image is declared in src/styles.scss
+// so Angular resolves the asset URL correctly from the project root.
 // =============================================================================
 
 @use '../../../styles/theme' as t;
 
 // ─── Shared Section Helpers ──────────────────────────────────────────────────
 
-.section {
-  @include t.section-spacing;
-}
-
-.section--alt {
-  background: t.$color-surface;
-}
+.section        { @include t.section-spacing; }
+.section--alt   { background: t.$color-surface; }
 
 .section-header {
   text-align: center;
   margin-bottom: t.$space-12;
 
-  .section-heading {
-    margin-top: t.$space-3;
-  }
+  .section-heading { margin-top: t.$space-3; }
 }
 
 
-// =============================================================================
-// HERO SECTION — replace everything from .hero { ... } down to the
-// @keyframes spotlight-pulse block in your home.component.scss.
-// Everything below // STATS BAR stays exactly as it is.
-// =============================================================================
+// ══════════════════════════════════════════════════════════════════════════════
+// HERO
+// ══════════════════════════════════════════════════════════════════════════════
 
 .hero {
   position: relative;
@@ -40,9 +34,7 @@
   justify-content: center;
   overflow: hidden;
 
-  // ── Static background image ──────────────────────────────────────────────
-  // Always visible. Gently breathes between 70% and 100% opacity.
-  // Never goes invisible — the image is always the dominant element.
+  // background-image lives in global styles.scss — all other properties here
   &__bg {
     position: absolute;
     inset: 0;
@@ -52,31 +44,25 @@
     animation: hero-breathe 10s ease-in-out infinite;
   }
 
-  // ── Dark gradient overlay ────────────────────────────────────────────────
-  // Kept light enough that the image shows through clearly.
-  // Heavier at the bottom so text always stays readable.
   &__overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(10, 10, 10, 0.20) 0%,
-      rgba(10, 10, 10, 0.35) 45%,
-      rgba(10, 10, 10, 0.75) 100%
+      rgba(10, 10, 10, 0.15) 0%,
+      rgba(10, 10, 10, 0.35) 50%,
+      rgba(10, 10, 10, 0.78) 100%
     );
     z-index: 1;
   }
 
-  // ── Gold glow pulse ──────────────────────────────────────────────────────
-  // Subtle radial glow that blooms at the image's brightest moment.
-  // Kept restrained so it enhances rather than obscures the photo.
   &__pulse {
     position: absolute;
     inset: 0;
     background: radial-gradient(
       ellipse at 50% 45%,
-      rgba(248, 213, 104, 0.22) 0%,
-      rgba(248, 213, 104, 0.06) 40%,
+      rgba(t.$color-primary, 0.22) 0%,
+      rgba(t.$color-primary, 0.06) 40%,
       transparent 65%
     );
     z-index: 2;
@@ -85,7 +71,6 @@
     animation-delay: 1.5s;
   }
 
-  // ── Content ──────────────────────────────────────────────────────────────
   &__content {
     position: relative;
     z-index: 10;
@@ -133,9 +118,7 @@
     color: t.$color-text;
     margin: 0;
 
-    @include t.mobile {
-      font-size: t.$font-size-lg;
-    }
+    @include t.mobile { font-size: t.$font-size-lg; }
   }
 
   &__actions {
@@ -168,46 +151,18 @@
   }
 }
 
-// ── Keyframes ─────────────────────────────────────────────────────────────────
-
-// Image breathes between 70% and 100% — always visible, never disappears.
-// The subtle scale shift (1.02 → 1.0) adds depth without being distracting.
 @keyframes hero-breathe {
   0%   { opacity: 0.7;  transform: scale(1.02); }
   50%  { opacity: 1;    transform: scale(1);    }
   100% { opacity: 0.7;  transform: scale(1.02); }
 }
 
-// Gold glow blooms in during the bright phase, fades during the dim phase.
-// Delayed 1.5s so it peaks just after the image is at its brightest.
 @keyframes hero-gold-pulse {
   0%   { opacity: 0;   }
   30%  { opacity: 0;   }
   60%  { opacity: 1;   }
   80%  { opacity: 0.4; }
   100% { opacity: 0;   }
-}
-
-// ── Keyframes ─────────────────────────────────────────────────────────────────
-
-// The background image slowly breathes between 85% and 100% opacity.
-// At its dimmest it's almost camouflaged into the overlay; at its brightest
-// it fully reveals before fading back. Total cycle: 10s.
-@keyframes hero-breathe {
-  0%   { opacity: 0.7;  transform: scale(1.02); }
-  50%  { opacity: 1;    transform: scale(1);    }
-  100% { opacity: 0.7;  transform: scale(1.02); }
-}
-
-
-// Gold radial glow blooms in as image reveals, peaks, then fades with it.
-// Delayed 2s so the glow peaks just after the image is brightest.
-@keyframes hero-gold-pulse {
-  0%   { opacity: 0;    }
-  40%  { opacity: 0;    }  // holds dark while image starts appearing
-  65%  { opacity: 1;    }  // peaks — full warm gold bloom
-  85%  { opacity: 0.3;  }  // pulls back
-  100% { opacity: 0;    }  // gone — resets for next cycle
 }
 
 
@@ -288,13 +243,11 @@
     gap: t.$space-6;
   }
 
-  &__media {
-    position: relative;
-  }
+  &__media { position: relative; }
 
   &__image {
-    width: 100%;
-    aspect-ratio: 4 / 3;
+    width: 75%;
+    aspect-ratio: 2 / 3;
     object-fit: cover;
     border-radius: var(--radius-lg);
     border: 2px solid t.$color-border;
@@ -337,13 +290,8 @@
   grid-template-columns: repeat(4, 1fr);
   gap: t.$space-6;
 
-  @include t.tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include t.mobile {
-    grid-template-columns: 1fr;
-  }
+  @include t.tablet  { grid-template-columns: repeat(2, 1fr); }
+  @include t.mobile  { grid-template-columns: 1fr; }
 }
 
 .service-card {
@@ -399,13 +347,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: t.$space-6;
 
-  @include t.tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include t.mobile {
-    grid-template-columns: 1fr;
-  }
+  @include t.tablet { grid-template-columns: repeat(2, 1fr); }
+  @include t.mobile { grid-template-columns: 1fr; }
 }
 
 .testimonial-card {
@@ -467,9 +410,7 @@
     gap: t.$space-4;
     margin-bottom: t.$space-10;
 
-    @include t.mobile {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    @include t.mobile { grid-template-columns: repeat(2, 1fr); }
   }
 
   &__item {
@@ -487,9 +428,7 @@
       transition: transform var(--transition-slow);
     }
 
-    &:hover img {
-      transform: scale(1.08);
-    }
+    &:hover img { transform: scale(1.08); }
   }
 
   &__overlay {
@@ -511,9 +450,7 @@
     }
   }
 
-  &__cta {
-    text-align: center;
-  }
+  &__cta { text-align: center; }
 }
 
 
@@ -567,9 +504,7 @@
     color: t.$color-text;
     margin: 0;
 
-    @include t.mobile {
-      font-size: t.$font-size-xl;
-    }
+    @include t.mobile { font-size: t.$font-size-xl; }
   }
 
   &__sub {

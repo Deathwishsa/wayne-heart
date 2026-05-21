@@ -1,13 +1,6 @@
 // =============================================================================
 // GLOBAL STYLES ENTRY POINT
 // src/styles.scss
-//
-// This file:
-//   1. Imports the theme (which emits :root vars + utility classes)
-//   2. Sets base resets
-//
-// Do NOT put component-specific styles here.
-// Do NOT put colors or fonts here — they live in styles/theme.scss.
 // =============================================================================
 
 @use './styles/theme' as t;
@@ -58,18 +51,9 @@ ul, ol {
 
 // ─── Scrollbar Styling ───────────────────────────────────────────────────────
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: t.$color-bg;
-}
-
-::-webkit-scrollbar-thumb {
-  background: t.$color-primary;
-  border-radius: 3px;
-}
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: t.$color-bg; }
+::-webkit-scrollbar-thumb  { background: t.$color-primary; border-radius: 3px; }
 
 // ─── Focus Accessibility ─────────────────────────────────────────────────────
 
@@ -79,9 +63,25 @@ ul, ol {
 }
 
 // ─── Font Awesome Fix ────────────────────────────────────────────────────────
-// Prevents FOUC on icon fonts
+
 .fa-solid,
 .fa-brands,
 .fa-regular {
   font-display: block;
+}
+
+// =============================================================================
+// HERO BACKGROUND IMAGE
+// Declared here in global styles (not the component SCSS) so that Angular's
+// build pipeline resolves the asset URL correctly. Component-scoped SCSS
+// inlines URLs relative to the bundle output — they silently break for
+// local assets. Global styles.scss resolves from the project src root.
+// =============================================================================
+
+.hero__bg {
+  background-image: url('assets/images/homepage_background.jpg');
+}
+
+.home_profile_pic_bg {
+  background-image: url('assets/images/homepage_background.jpg');
 }

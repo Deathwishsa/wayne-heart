@@ -19,9 +19,6 @@ export class HomeComponent {
 
   business = BUSINESS;
 
-  // Hero background — place your image at src/assets/images/homepage_background.jpg
-  heroImage = 'assets/images/homepage_background.jpg';
-
   galleryImages = [
     'https://picsum.photos/id/1005/800/600',
     'https://picsum.photos/id/1018/800/600',

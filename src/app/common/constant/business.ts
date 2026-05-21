@@ -56,8 +56,8 @@ export const BUSINESS = {
   metaDescription : 'Wayne Heart — Cape Town\'s premier emcee, karaoke host & event entertainer. Available for weddings, corporate events, private parties and more.',
 
   // ── Contact
-  phone    : '+27 82 000 0000',
-  email    : 'booking@wayneheart.co.za',
+  phone    : '+27 81 705 5643',
+  email    : 'bookings.kingduwayne@gmail.com',
   website  : 'https://wayneheart.co.za',
 
   // ── Social Media
@@ -65,23 +65,23 @@ export const BUSINESS = {
     {
       platform : 'Instagram',
       icon     : 'fa-brands fa-instagram',
-      url      : 'https://instagram.com/wayneheart',
+      url      : 'https://instagram.com/duwayne_steenberg',
     },
-    {
+    /*{
       platform : 'Facebook',
       icon     : 'fa-brands fa-facebook-f',
       url      : 'https://facebook.com/wayneheart',
-    },
+    },*/
     {
       platform : 'TikTok',
       icon     : 'fa-brands fa-tiktok',
-      url      : 'https://tiktok.com/@wayneheart',
+      url      : 'https://tiktok.com/@King_Duwayne',
     },
-    {
+    /*{
       platform : 'YouTube',
       icon     : 'fa-brands fa-youtube',
       url      : 'https://youtube.com/@wayneheart',
-    },
+    },*/
   ] as SocialLink[],
 
   // ── Navigation
