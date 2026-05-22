@@ -254,24 +254,22 @@
     }
   }
 
-  &__image {
-    // Always fills the column width
-    width: 100%;
-    // Fixed height keeps the image visible regardless of screen width.
-    // background-image set in styles.scss
-    height: 480px;
-    background-size: cover;
-    background-position: center top; // keeps face/subject visible — adjust to center if needed
-    background-repeat: no-repeat;
-    border-radius: var(--radius-lg);
-    border: 2px solid t.$color-border;
-    display: block;
+&__image {
+  width: 100%;
+  // Height derived from image ratio (672x1071 ≈ 3:4.8)
+  // At full column width this keeps the full portrait visible
+  height: clamp(340px, 60vw, 580px);
+  background-size: contain;
+  background-position: center top;
+  background-repeat: no-repeat;
+  border-radius: var(--radius-lg);
+  border: 2px solid t.$color-border;
+  display: block;
 
-    @include t.mobile {
-      height: 340px;
-      background-position: center top;
-    }
+  @include t.mobile {
+    height: clamp(300px, 80vw, 420px);
   }
+}
 
   &__badge-floating {
     position: absolute;
