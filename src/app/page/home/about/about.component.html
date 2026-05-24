@@ -1,0 +1,23 @@
+<section class="about section" aria-label="About Wayne Heart">
+  <div class="about__inner container">
+
+    <div class="about__text">
+      <span class="section-label">The Man Behind the Mic</span>
+      <h2 class="section-heading">Your go-to emcee who turns moments into memories</h2>
+      <p class="section-subheading">{{ business.shortBio }}</p>
+      <a [routerLink]="business.ctaRoute" class="btn-primary">
+        <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+        Book for Your Event
+      </a>
+    </div>
+
+    <div class="about__media">
+      <div class="about__image" aria-hidden="true"></div>
+      <div class="about__badge-floating">
+        <i class="fa-solid fa-microphone-lines" aria-hidden="true"></i>
+        <span>8+ Years<br>on Stage</span>
+      </div>
+    </div>
+
+  </div>
+</section>

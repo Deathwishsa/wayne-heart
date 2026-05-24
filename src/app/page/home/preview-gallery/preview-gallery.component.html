@@ -1,0 +1,31 @@
+<section class="gallery-preview section section--alt" aria-label="Gallery preview">
+  <div class="container">
+
+    <div class="section-header">
+      <span class="section-label">The Highlight Reel</span>
+      <h2 class="section-heading">See the energy</h2>
+    </div>
+
+    <div class="gallery-preview__grid">
+      <a
+        *ngFor="let img of galleryImages; let i = index"
+        routerLink="/gallery"
+        class="gallery-preview__item"
+        [attr.aria-label]="'Gallery image ' + (i + 1)"
+      >
+        <img [src]="img" [alt]="'Event highlight ' + (i + 1)" loading="lazy" />
+        <div class="gallery-preview__overlay">
+          <i class="fa-solid fa-expand" aria-hidden="true"></i>
+        </div>
+      </a>
+    </div>
+
+    <div class="gallery-preview__cta">
+      <a routerLink="/gallery" class="btn-outline">
+        <i class="fa-solid fa-images" aria-hidden="true"></i>
+        View Full Gallery
+      </a>
+    </div>
+
+  </div>
+</section>
