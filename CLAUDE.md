@@ -35,6 +35,11 @@ Angular 21 application with SSR (Server-Side Rendering) and Capacitor for mobile
 - `public/` — Static assets served directly (robots.txt, favicons)
 - `assets/` — Images referenced by components
 
+## Planning Docs
+
+- [md/git-workflow.md](md/git-workflow.md) — branch and deploy process
+- [md/gallery-plan.md](md/gallery-plan.md) — dynamic Instagram gallery options and recommended approach
+
 ## Git Workflow
 
 See [md/git-workflow.md](md/git-workflow.md) for the full branching and deployment process.
