@@ -87,7 +87,7 @@ export const BUSINESS = {
   // ── Navigation
   nav: [
     { label: 'Home',      route: '/',           icon: 'fa-solid fa-house' },
-    { label: 'Gallery',   route: '/gallery',    icon: 'fa-solid fa-images' },
+    // { label: 'Gallery',   route: '/gallery',    icon: 'fa-solid fa-images' },   // TODO: enable when gallery page is ready
     { label: 'Booking',   route: '/booking',    icon: 'fa-solid fa-calendar-check' },
     { label: 'Contact',   route: '/contact-us', icon: 'fa-solid fa-envelope' },
   ] as NavItem[],

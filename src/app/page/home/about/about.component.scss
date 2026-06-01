@@ -34,6 +34,7 @@
     width: 100%;
     // Height derived from image ratio (672x1071 ≈ 3:4.8)
     height: clamp(340px, 60vw, 580px);
+    background-image: url('../../../../assets/images/homepage_profile_pic.JPG');
     background-size: contain;
     background-position: center top;
     background-repeat: no-repeat;

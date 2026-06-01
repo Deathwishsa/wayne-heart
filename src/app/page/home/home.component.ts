@@ -4,7 +4,7 @@ import { StatsBarComponent } from './stats-bar/stats-bar.component';
 import { AboutComponent } from './about/about.component';
 import { ServicesComponent } from './services/services.component';
 import { TestimonialsComponent } from './testimonials/testimonials.component';
-import { PreviewGalleryComponent } from './preview-gallery/preview-gallery.component';
+// import { PreviewGalleryComponent } from './preview-gallery/preview-gallery.component';
 import { PreviewBookingComponent } from './preview-booking/preview-booking.component';
 
 @Component({
@@ -16,7 +16,7 @@ import { PreviewBookingComponent } from './preview-booking/preview-booking.compo
     AboutComponent,
     ServicesComponent,
     TestimonialsComponent,
-    PreviewGalleryComponent,
+    // PreviewGalleryComponent,
     PreviewBookingComponent,
   ],
   templateUrl: './home.component.html',
