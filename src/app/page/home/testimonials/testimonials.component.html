@@ -1,0 +1,26 @@
+<section class="testimonials section" aria-label="Testimonials">
+  <div class="container">
+
+    <div class="section-header">
+      <span class="section-label">What People Say</span>
+      <h2 class="section-heading">The crowd never lies</h2>
+    </div>
+
+    <div class="testimonials__grid">
+      <blockquote
+        *ngFor="let t of business.testimonials"
+        class="testimonial-card"
+      >
+        <div class="testimonial-card__stars" aria-label="5 stars">
+          <i class="fa-solid fa-star" *ngFor="let s of stars" aria-hidden="true"></i>
+        </div>
+        <p class="testimonial-card__quote">"{{ t.quote }}"</p>
+        <footer class="testimonial-card__author">
+          <strong>{{ t.author }}</strong>
+          <span>{{ t.event }}</span>
+        </footer>
+      </blockquote>
+    </div>
+
+  </div>
+</section>

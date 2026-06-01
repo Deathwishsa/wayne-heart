@@ -85,3 +85,17 @@ ul, ol {
 .about__image {
   background-image: url('../assets/images/homepage_profile_pic.JPG');
 }
+
+// ─── Section Layout Utilities ────────────────────────────────────────────────
+// Defined here (not in home.component.scss) so they apply inside child
+// components that each have their own view encapsulation.
+
+.section      { @include t.section-spacing; }
+.section--alt { background: t.$color-surface; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: t.$space-12;
+
+  .section-heading { margin-top: t.$space-3; }
+}
