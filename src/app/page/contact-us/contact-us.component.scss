@@ -393,13 +393,13 @@
   border-radius: var(--radius-md);
   padding: t.$space-4 t.$space-6;
   text-decoration: none;
-  transition: border-color var(--transition-base),
-              box-shadow var(--transition-base),
-              transform var(--transition-base);
+  transition: border-color  var(--transition-base),
+              filter         var(--transition-base),
+              transform      var(--transition-base);
 
   &:not(&--no-link):hover {
     border-color: t.$color-border-hover;
-    box-shadow: var(--shadow-gold);
+    filter: drop-shadow(0 0 12px rgba(t.$color-primary, 0.30));
     transform: translateX(4px);
   }
 
