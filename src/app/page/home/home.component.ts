@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HeroComponent } from './hero/hero.component';
 import { StatsBarComponent } from './stats-bar/stats-bar.component';
+import { NextShowComponent } from './next-show/next-show.component';
 import { AboutComponent } from './about/about.component';
 import { ServicesComponent } from './services/services.component';
 import { TestimonialsComponent } from './testimonials/testimonials.component';
@@ -13,6 +14,7 @@ import { PreviewBookingComponent } from './preview-booking/preview-booking.compo
   imports: [
     HeroComponent,
     StatsBarComponent,
+    NextShowComponent,
     AboutComponent,
     ServicesComponent,
     TestimonialsComponent,
