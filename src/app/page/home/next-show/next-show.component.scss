@@ -1,0 +1,52 @@
+@use '../../../../styles/theme' as t;
+
+.next-show {
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: t.$space-8;
+  }
+
+  &__poster-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+
+    // Ambient gold glow behind the poster
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: calc(var(--radius-lg) + 2px);
+      background: linear-gradient(
+        160deg,
+        t.$color-primary 0%,
+        t.$color-primary-dark 50%,
+        t.$color-primary 100%
+      );
+      z-index: 0;
+      opacity: 0.55;
+      filter: blur(18px);
+      pointer-events: none;
+    }
+  }
+
+  &__poster {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    border: 1.5px solid t.$color-border-hover;
+    box-shadow: var(--shadow-gold-lg);
+    transition: transform var(--transition-slow),
+                box-shadow var(--transition-slow);
+
+    &:hover {
+      transform: scale(1.015);
+      box-shadow: 0 0 70px -8px t.$color-primary;
+    }
+  }
+}
