@@ -62,6 +62,11 @@
   @include t.section-spacing;
 }
 
+.contact-layout {
+  // Clip any child that bleeds past the section edge on narrow viewports
+  overflow-x: clip;
+}
+
 .contact-layout__inner {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -76,6 +81,13 @@
     grid-template-columns: 1fr;
     gap: t.$space-10;
   }
+}
+
+// Grid children must opt-in to shrinking below their content size —
+// without min-width:0 they can overflow their 1fr column on mobile.
+.form-col,
+.info-col {
+  min-width: 0;
 }
 
 
