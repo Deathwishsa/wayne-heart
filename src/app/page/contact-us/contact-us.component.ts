@@ -69,16 +69,36 @@ export class ContactUsComponent {
     },
   ];
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.formStatus === 'submitting') return;
 
     this.formStatus = 'submitting';
 
-    // Simulate async submission — replace with real API call / EmailJS / FormSpree
-    setTimeout(() => {
-      // Swap to 'error' to test the error state
-      this.formStatus = 'success';
-    }, 1800);
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key : '35b39dc5-782b-4e5d-96e1-54ead4b6fe76',
+          subject    : `Booking Enquiry – ${this.form.name} (${this.form.eventType})`,
+          from_name  : this.form.name,
+          email      : this.form.email,
+          phone      : this.form.phone || 'Not provided',
+          event_type : this.form.eventType,
+          event_date : this.form.eventDate,
+          message    : this.form.message,
+          botcheck   : '',            // honeypot — must be empty
+        }),
+      });
+
+      const data = await response.json();
+      this.formStatus = data.success ? 'success' : 'error';
+    } catch {
+      this.formStatus = 'error';
+    }
   }
 
   resetForm(): void {
