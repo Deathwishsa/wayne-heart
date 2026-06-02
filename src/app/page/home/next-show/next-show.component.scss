@@ -1,11 +1,83 @@
 @use '../../../../styles/theme' as t;
 
+// ─── Animations ──────────────────────────────────────────────────────────────
+
+// Glow breathes in and out to draw the eye
+@keyframes ticket-pulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 2px  rgba(t.$color-primary, 0.45),
+                0 4px 12px    rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 38px 10px rgba(t.$color-primary, 0.85),
+                0 6px 20px    rgba(0, 0, 0, 0.45);
+  }
+}
+
+// Shimmer sweep across the button face
+@keyframes ticket-shimmer {
+  0%        { left: -75%; }
+  55%, 100% { left: 150%; }
+}
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
 .next-show {
   &__inner {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: t.$space-8;
+  }
+
+  // Bigger "On Stage Soon" label
+  &__label {
+    display: inline-block;
+    font-family: t.$font-body;
+    font-size: t.$font-size-sm;   // larger than default section-label (xs)
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: t.$color-primary;
+  }
+
+  // ── Ticket CTA button ─────────────────────────────────────────────────────
+  &__ticket-btn {
+    @include t.btn-primary;
+    text-decoration: none;
+    font-size: t.$font-size-lg;
+    padding: t.$space-4 t.$space-10;
+    gap: t.$space-3;
+
+    // Glow pulse — runs continuously
+    animation: ticket-pulse 2s ease-in-out infinite;
+
+    // Shimmer sweep — clip it inside the button
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.22) 50%,
+        transparent 100%
+      );
+      pointer-events: none;
+      animation: ticket-shimmer 2.8s ease-in-out infinite;
+    }
+
+    // On hover: pause the ambient glow (btn-primary mixin handles scale/shadow)
+    &:hover {
+      animation: none;
+      &::after { animation: none; }
+    }
   }
 
   &__poster-wrap {
