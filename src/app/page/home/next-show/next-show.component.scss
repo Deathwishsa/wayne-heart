@@ -2,22 +2,17 @@
 
 // ─── Animations ──────────────────────────────────────────────────────────────
 
-// Glow breathes in and out to draw the eye
-@keyframes ticket-pulse {
-  0%, 100% {
-    box-shadow: 0 0 14px 2px  rgba(t.$color-primary, 0.45),
-                0 4px 12px    rgba(0, 0, 0, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 38px 10px rgba(t.$color-primary, 0.85),
-                0 6px 20px    rgba(0, 0, 0, 0.45);
-  }
+// Opacity animation = GPU composited = no repaint glitch
+// The actual box-shadow lives statically on ::before; only its opacity breathes.
+@keyframes ticket-glow {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 1;    }
 }
 
-// Shimmer sweep across the button face
+// Shimmer via background-position — no overflow:hidden needed
 @keyframes ticket-shimmer {
-  0%        { left: -75%; }
-  55%, 100% { left: 150%; }
+  0%        { background-position: -100% 0; }
+  55%, 100% { background-position:  250% 0; }
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -47,36 +42,56 @@
     text-decoration: none;
     font-size: t.$font-size-lg;
     padding: t.$space-4 t.$space-10;
-    gap: t.$space-3;
 
-    // Glow pulse — runs continuously
-    animation: ticket-pulse 2s ease-in-out infinite;
+    // Override btn-primary: glow handled by ::before opacity animation
+    // Clear the mixin's filter drop-shadow — ::before pseudo-element owns the glow
+    filter: none;
+    transition: transform var(--transition-base);
 
-    // Shimmer sweep — clip it inside the button
+    // translateZ(0) creates a stacking context so ::before z-index:-1
+    // is scoped inside the button (not the page)
+    transform: translateZ(0);
     position: relative;
-    overflow: hidden;
 
+    // ── Glow layer ─────────────────────────────────────────────────────────
+    // Static large box-shadow on a pseudo-element; only opacity animates.
+    // opacity IS GPU-composited → perfectly smooth, zero repaint glitch.
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 0 36px 10px rgba(t.$color-primary, 0.85),
+                  0 6px 20px       rgba(0, 0, 0, 0.40);
+      z-index: -1;
+      pointer-events: none;
+      animation: ticket-glow 2s ease-in-out infinite;
+    }
+
+    // ── Shimmer layer ───────────────────────────────────────────────────────
+    // background-position sweep — no overflow:hidden required on parent
     &::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: -75%;
-      width: 50%;
-      height: 100%;
+      inset: 0;
+      border-radius: inherit;
       background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.22) 50%,
-        transparent 100%
+        105deg,
+        transparent       30%,
+        rgba(255,255,255,0.22) 50%,
+        transparent       70%
       );
+      background-size: 200% 100%;
       pointer-events: none;
       animation: ticket-shimmer 2.8s ease-in-out infinite;
     }
 
-    // On hover: pause the ambient glow (btn-primary mixin handles scale/shadow)
+    // On hover: freeze both animations; btn-primary scale takes over
     &:hover {
-      animation: none;
-      &::after { animation: none; }
+      transform: scale(1.05);
+      filter: none;
+      &::before { animation: none; opacity: 1; }
+      &::after  { animation: none; }
     }
   }
 
@@ -112,13 +127,18 @@
     height: auto;
     border-radius: var(--radius-lg);
     border: 1.5px solid t.$color-border-hover;
-    box-shadow: var(--shadow-gold-lg);
-    transition: transform var(--transition-slow),
-                box-shadow var(--transition-slow);
+
+    // filter: drop-shadow() lives on the element's own GPU compositing layer,
+    // so it transitions WITH the element — no pop, no layer mismatch.
+    // box-shadow (which paints on the parent layer) is replaced entirely.
+    will-change: transform;
+    filter: drop-shadow(0 0 16px rgba(t.$color-primary, 0.40));
+    transition: transform      var(--transition-slow),
+                filter         var(--transition-slow);
 
     &:hover {
       transform: scale(1.015);
-      box-shadow: 0 0 70px -8px t.$color-primary;
+      filter: drop-shadow(0 0 26px rgba(t.$color-primary, 0.70));
     }
   }
 }

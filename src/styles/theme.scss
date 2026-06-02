@@ -158,13 +158,14 @@ $container-max : 1280px;
   background: $color-surface;
   border: 1px solid $color-border;
   border-radius: var(--radius-lg);
-  transition: border-color var(--transition-slow),
-              box-shadow var(--transition-slow),
-              transform var(--transition-slow);
+  // filter is GPU-composited — no compositing-layer split with transform
+  transition: border-color  var(--transition-slow),
+              filter         var(--transition-slow),
+              transform      var(--transition-slow);
 
   &:hover {
     border-color: $color-border-hover;
-    box-shadow: var(--shadow-gold);
+    filter: drop-shadow(0 0 16px rgba($color-primary, 0.35));
     transform: translateY(-6px);
   }
 }
@@ -184,14 +185,15 @@ $container-max : 1280px;
   border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
-  box-shadow: 0 0 24px $color-primary-glow;
-  transition: transform var(--transition-base),
-              box-shadow var(--transition-base);
+  // GPU-composited glow — no compositing-layer split with transform
+  filter: drop-shadow(0 0 10px rgba($color-primary, 0.35));
+  transition: transform  var(--transition-base),
+              filter     var(--transition-base);
   text-decoration: none;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: var(--shadow-gold-lg);
+    filter: drop-shadow(0 0 22px rgba($color-primary, 0.65));
   }
 }
 
