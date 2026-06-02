@@ -1,5 +1,13 @@
-# === Angular Deploy Script v7 - Interactive GitHub vs Domain (Fixed) ===
-Write-Host "🚀 Angular Deploy to Live - Starting (v7)..." -ForegroundColor Cyan
+# === Angular Deploy Script v9 - Interactive GitHub vs Domain ===
+# Optional parameter: -DeployType g|d  (skips the interactive prompt)
+param(
+    [string]$DeployType = ""
+)
+
+# Raise Node.js heap limit so the SSR build doesn't OOM on large projects
+$env:NODE_OPTIONS = "--max-old-space-size=4096"
+
+Write-Host "🚀 Angular Deploy to Live - Starting (v9)..." -ForegroundColor Cyan
 
 # 1. Stash any changes to the script
 Write-Host "Step 1: Stashing script changes..." -ForegroundColor Yellow
@@ -20,18 +28,20 @@ Write-Host "Step 4: npm install..." -ForegroundColor Yellow
 npm install --legacy-peer-deps
 
 # === Choose deployment type ===
-Write-Host "`nIs this for GitHub Pages (subfolder) or Custom Domain?" -ForegroundColor Cyan
-Write-Host "Enter [g] for GitHub Pages or [d] for Custom Domain: " -NoNewline
-$choice = Read-Host
+if (-not $DeployType) {
+    Write-Host "`nIs this for GitHub Pages (subfolder) or Custom Domain?" -ForegroundColor Cyan
+    Write-Host "Enter [g] for GitHub Pages or [d] for Custom Domain: " -NoNewline
+    $DeployType = Read-Host
+}
 
-if ($choice -eq "g" -or $choice -eq "G") {
+if ($DeployType -eq "g" -or $DeployType -eq "G") {
     $baseHref = "/wayne-heart/"
-    $deployType = "GitHub"
+    $deployTypeLabel = "GitHub"
     Write-Host "→ GitHub Pages mode selected (base-href = /wayne-heart/)" -ForegroundColor Yellow
 }
 else {
     $baseHref = "/"
-    $deployType = "Domain"
+    $deployTypeLabel = "Domain"
     Write-Host "→ Custom Domain / Root mode selected (base-href = /)" -ForegroundColor Yellow
 }
 
@@ -42,7 +52,7 @@ npx ng build --configuration production --output-path dist/live-build --base-hre
 # Check build
 if (-Not (Test-Path "dist/live-build/browser/index.html")) {
     Write-Host "❌ Build failed - index.html not found in dist/live-build/browser/" -ForegroundColor Red
-    Read-Host "Press Enter to exit"
+    if (-not $DeployType) { Read-Host "Press Enter to exit" }
     exit 1
 }
 Write-Host "✅ Build successful!" -ForegroundColor Green
@@ -52,13 +62,13 @@ Write-Host "Step 6: Cleaning non-build files..." -ForegroundColor Yellow
 
 # Safer cleaning - explicitly remove only unwanted items
 Get-ChildItem -Path . | Where-Object {
-    $_.Name -ne "deploy-to-live.ps1" -and 
-    $_.Name -ne ".git" -and 
-    $_.Name -ne "dist" -and 
+    $_.Name -ne "deploy-to-live.ps1" -and
+    $_.Name -ne ".git" -and
+    $_.Name -ne "dist" -and
     $_.Name -notlike ".*"
 } | Remove-Item -Recurse -Force
 
-# 7. Copy browser build to root
+# 7. Copy browser build to root (includes CNAME from public/ via Angular asset pipeline)
 Write-Host "Step 7: Copying browser build to root..." -ForegroundColor Yellow
 Copy-Item -Path "dist/live-build/browser/*" -Destination . -Recurse -Force
 
@@ -70,14 +80,14 @@ New-Item -ItemType File -Name ".nojekyll" -Force | Out-Null
 # 9. Commit & Force Push
 Write-Host "Step 9: Committing & force pushing..." -ForegroundColor Yellow
 git add .
-$commitMessage = "Deploy: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $deployType"
+$commitMessage = "Deploy: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $deployTypeLabel"
 git commit -m $commitMessage
 git push origin live --force
 
 git stash pop -q 2>$null
 
 Write-Host "`n🎉 SUCCESS! Deployment completed." -ForegroundColor Green
-Write-Host "Live site: https://Deathwishsa.github.io/wayne-heart/" -ForegroundColor Magenta
+Write-Host "Live site: https://wayneheart.co.za/" -ForegroundColor Magenta
 Write-Host "GitHub live branch: https://github.com/Deathwishsa/wayne-heart/tree/live" -ForegroundColor Magenta
 
-Read-Host "`nPress Enter to close window"
+if (-not $DeployType) { Read-Host "`nPress Enter to close window" }
