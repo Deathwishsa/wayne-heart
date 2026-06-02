@@ -1,10 +1,13 @@
-# === Angular Deploy Script v8 - Interactive GitHub vs Domain ===
+# === Angular Deploy Script v9 - Interactive GitHub vs Domain ===
 # Optional parameter: -DeployType g|d  (skips the interactive prompt)
 param(
     [string]$DeployType = ""
 )
 
-Write-Host "🚀 Angular Deploy to Live - Starting (v8)..." -ForegroundColor Cyan
+# Raise Node.js heap limit so the SSR build doesn't OOM on large projects
+$env:NODE_OPTIONS = "--max-old-space-size=4096"
+
+Write-Host "🚀 Angular Deploy to Live - Starting (v9)..." -ForegroundColor Cyan
 
 # 1. Stash any changes to the script
 Write-Host "Step 1: Stashing script changes..." -ForegroundColor Yellow
