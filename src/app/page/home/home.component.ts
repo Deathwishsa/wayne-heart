@@ -4,7 +4,7 @@ import { StatsBarComponent } from './stats-bar/stats-bar.component';
 import { NextShowComponent } from './next-show/next-show.component';
 import { AboutComponent } from './about/about.component';
 import { ServicesComponent } from './services/services.component';
-import { TestimonialsComponent } from './testimonials/testimonials.component';
+// import { TestimonialsComponent } from './testimonials/testimonials.component';
 // import { PreviewGalleryComponent } from './preview-gallery/preview-gallery.component';
 import { PreviewBookingComponent } from './preview-booking/preview-booking.component';
 
@@ -17,7 +17,7 @@ import { PreviewBookingComponent } from './preview-booking/preview-booking.compo
     NextShowComponent,
     AboutComponent,
     ServicesComponent,
-    TestimonialsComponent,
+    // TestimonialsComponent,
     // PreviewGalleryComponent,
     PreviewBookingComponent,
   ],
