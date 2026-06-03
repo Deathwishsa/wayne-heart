@@ -75,22 +75,21 @@ export class ContactUsComponent {
     this.formStatus = 'submitting';
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const response = await fetch('https://software-email-relay-api.vercel.app/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
+          'x-api-key'   : '0fba8806c75cca98b6577dbd360d03bfcc220c44ecb7888e',
         },
         body: JSON.stringify({
-          access_key : '35b39dc5-782b-4e5d-96e1-54ead4b6fe76',
-          subject    : `Booking Enquiry – ${this.form.name} (${this.form.eventType})`,
-          from_name  : this.form.name,
-          email      : this.form.email,
-          phone      : this.form.phone || 'Not provided',
-          event_type : this.form.eventType,
-          event_date : this.form.eventDate,
-          message    : this.form.message,
-          botcheck   : '',            // honeypot — must be empty
+          fields: {
+            name      : this.form.name,
+            email     : this.form.email,
+            phone     : this.form.phone || 'Not provided',
+            event_type: this.form.eventType,
+            event_date: this.form.eventDate,
+            message   : this.form.message,
+          },
         }),
       });
 
