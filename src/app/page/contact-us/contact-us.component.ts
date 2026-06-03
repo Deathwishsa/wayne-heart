@@ -3,10 +3,11 @@
 // src/app/page/contact-us/contact-us.component.ts
 // =============================================================================
 
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BUSINESS } from '../../common/constant/business';
 
 interface ContactForm {
@@ -28,6 +29,10 @@ type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
   styleUrls: ['./contact-us.component.scss'],
 })
 export class ContactUsComponent {
+
+  @ViewChild('successCard') successCard!: ElementRef<HTMLElement>;
+
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   business = BUSINESS;
 
@@ -69,35 +74,38 @@ export class ContactUsComponent {
     },
   ];
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     if (this.formStatus === 'submitting') return;
 
     this.formStatus = 'submitting';
 
-    try {
-      const response = await fetch('https://software-email-relay-api.vercel.app/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key'   : '0fba8806c75cca98b6577dbd360d03bfcc220c44ecb7888e',
-        },
-        body: JSON.stringify({
-          fields: {
-            name      : this.form.name,
-            email     : this.form.email,
-            phone     : this.form.phone || 'Not provided',
-            event_type: this.form.eventType,
-            event_date: this.form.eventDate,
-            message   : this.form.message,
-          },
-        }),
-      });
+    const headers = new HttpHeaders({ 'x-api-key': '0fba8806c75cca98b6577dbd360d03bfcc220c44ecb7888e' });
 
-      const data = await response.json();
-      this.formStatus = data.success ? 'success' : 'error';
-    } catch {
-      this.formStatus = 'error';
-    }
+    this.http.post<{ success: boolean }>(
+      'https://software-email-relay-api.vercel.app/send',
+      {
+        fields: {
+          name      : this.form.name,
+          email     : this.form.email,
+          phone     : this.form.phone || 'Not provided',
+          event_type: this.form.eventType,
+          event_date: this.form.eventDate,
+          message   : this.form.message,
+        },
+      },
+      { headers }
+    ).subscribe({
+      next : (data) => {
+        this.formStatus = data.success ? 'success' : 'error';
+        if (data.success) {
+          // Force Angular to update the DOM before scrolling — the [style.display]
+          // binding won't have flushed yet inside the subscribe callback.
+          this.cdr.detectChanges();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      },
+      error: ()     => { this.formStatus = 'error'; },
+    });
   }
 
   resetForm(): void {
