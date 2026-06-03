@@ -29,7 +29,9 @@
     <div class="form-col">
 
       <!-- ── Success State ── -->
-      <div *ngIf="formStatus === 'success'" class="form-success" role="alert">
+      <!-- [hidden] keeps element in DOM — toggling display is an instant repaint.
+           *ngIf inserts/removes nodes which can miss a browser paint cycle. -->
+      <div [style.display]="formStatus === 'success' ? 'flex' : 'none'" #successCard class="form-success" role="alert">
         <div class="form-success__icon">
           <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
         </div>
@@ -53,7 +55,7 @@
 
       <!-- ── The Form ── -->
       <form
-        *ngIf="formStatus === 'idle' || formStatus === 'submitting'"
+        [style.display]="formStatus === 'success' ? 'none' : 'flex'"
         class="booking-form"
         (ngSubmit)="onSubmit()"
         #contactForm="ngForm"
